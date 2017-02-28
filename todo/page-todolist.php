@@ -33,7 +33,8 @@ $editStatus = json_encode(array());
 var App = {
   userInfo: <?php echo $userInfo;?>,
   listItems: <?php echo $listItems;?>,
-  lastEdited: false
+  lastEdited: false,
+  pageid: <?php echo get_the_ID();?>  
 }
 
 </script>

@@ -21,7 +21,10 @@ Vue.component('main-form', {
                 'action': 'ajaxlogin', //calls wp_ajax_nopriv_ajaxlogin
                 'username': this.email,
                 'password': this.password,
-                'security': $('#login-form #security').val() },
+                'security': $('#login-form #security').val() ,
+                'pageid': App.pageid
+              },
+
             success: function(data){
                 console.log(data)
             }
