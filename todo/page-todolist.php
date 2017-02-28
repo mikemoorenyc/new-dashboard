@@ -59,9 +59,11 @@ var App = {
     <a target="_blank" href="<?php echo wp_lostpassword_url(); ?>">Forgot your password?</a>
     <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
   </form>
+  <transition>
   <div id="form-modal" v-if="modal!== false" :class="modal.status">
     {{modal.text}}
   </div>
+  </transition>
 </div>
 </script>
 
