@@ -26,7 +26,18 @@ Vue.component('main-form', {
               },
 
             success: function(data){
-                console.log(data)
+                if(loggedin){
+                 this.modal = {
+                  status:"good",
+                  text: data.message
+                 }
+                } else {
+                  this.password = '';
+                  this.email = '';
+                 this.modal = {
+                   status: 'error'
+                 }
+                }
             }
         });
     }
