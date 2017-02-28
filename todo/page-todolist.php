@@ -62,6 +62,11 @@ var App = {
   <transition>
   <div id="form-modal" v-if="modal!== false" :class="modal.status">
     {{modal.text}}
+    <div class="error-msg" v-if="modal.status == "error" >
+      <div class="text">Couldn't log you in</div>
+      <button>Try Again</button>
+    
+    </div>
   </div>
   </transition>
 </div>
