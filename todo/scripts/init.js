@@ -14,13 +14,17 @@ $(document).ready(function(){
         this.listItems = listItems;
         this.lastModified = lastModified;
       },
+      setEditing: function(id) {
+
+        this.currentlyEditing = id;
+      },
       addItem: function(title) {
         this.listItems.unshift({
           id: new Date().getTime(),
           title: title,
-          checked: false,
+
           addedBy:this.userInfo,
-          checkedBy: null
+          checkedBy: false
         })
       }
     },
@@ -30,6 +34,8 @@ $(document).ready(function(){
         <main-form v-if="userInfo === false" v-on:updatestatus="updateStatus"/>
         <main-list
           :listItems="listItems"
+          :currentlyEditing="currentlyEditing"
+          v-on:editing="setEditing"
         />
       </div>
     `)
