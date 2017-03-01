@@ -52,10 +52,11 @@ var App = {
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/sortable/1.4.2/Sortable.min.js"></script>
 <script src="https://cdn.rawgit.com/David-Desmaisons/Vue.Draggable/master/dist/vuedraggable.min.js"></script>
-<script src="<?php echo get_bloginfo('template_url');?>/todo/main.js"></script>
+<script src="<?php echo get_bloginfo('template_url');?>/todo/main.js?v=<?php echo time();?>"></script>
 
 <script type="text/x-template" id="login-template">
 <div>
+
   <form id="login-form" action="<?php echo admin_url( 'admin-ajax.php' );?>" method="post" >
     <input type="text" v-model="email" required placeholder="Email Address" />
     <input v-model="password" type="password" placeholder="Password" />
@@ -65,18 +66,29 @@ var App = {
   </form>
   <transition>
   <div id="form-modal" v-if="modal!== false" :class="modal.status">
-    {{modal.text}}
-    <div class="error-msg" v-if="modal.status == "error" >
+    <div class="loading" v-if="modal.status=='loading'">
+      loading..
+    </div>
+
+    <div class="error-msg" v-if="modal.status == 'error'" >
       <div class="text">Couldn't log you in</div>
-      <button>Try Again</button>
-    
+      <button @click.prevent="reset">Try Again</button>
+
+    </div>
+    <div class="success-msg" v-if="modal.status == 'success'">
+      <div class="msg" v-html="modal.text"></div>
     </div>
   </div>
   </transition>
 </div>
 </script>
 
-
+<script type="text/x-template" id="app-header-template">
+    <?php include 'template-app-header.php';?>
+</script>
+<script type="x-template" id="main-list-template">
+  <?php include 'template-thelist.php';?>
+</script>
 
 
 </body>
