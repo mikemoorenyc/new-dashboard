@@ -1,6 +1,6 @@
 <?php
 include 'author-color.php';
-
+include 'getlistdata.php';
 
 function ajax_login_init() {
   add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
@@ -29,7 +29,8 @@ function ajax_login(){
       $current_user = wp_get_current_user();
       $userInfo = returnUser($user_signon->ID);
         echo json_encode(array('loggedin'=>true,
-                                'userInfo'=> $userInfo
+                                'userInfo'=> $userInfo,
+                                'listData' => getListData($_POST['pageid'])
                           ));
     }
 
