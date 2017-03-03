@@ -40,7 +40,7 @@ var App = {
   ajaxURL : "<?php echo admin_url( 'admin-ajax.php' );?>",
   currentlyEditing: false
 }
-
+App.listItems = [];
 </script>
 </head>
 

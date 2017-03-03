@@ -3,6 +3,7 @@
     You have no to-do items!
   </div>
   <ul id="main-list" v-if="listItems.length > 0">
+    <draggable :list="listItems">
     <li v-for="(item,index) in listItems" :key="item.id">
       <div v-if="currentlyEditing !== item.id">
         <div class="checkbox" :class="{checked: item.checked}"></div>
@@ -23,6 +24,7 @@
 
 
     </li>
+  </draggable>
 
 
   </ul>
