@@ -4,6 +4,9 @@ Vue.component('main-list', {
   methods: {
     editClick: function(id) {
       this.$emit('editing', id);
+    },
+    deleteClick: function(id) {
+      App.bus.$emit('delete-item',id)
     }
   }
 

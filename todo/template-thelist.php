@@ -10,15 +10,16 @@
 
         <div class="controls">
           <button @click.prevent="editClick(item.id)"> Edit</button>
-          <button>Delete</button>
+          <button @click.prevent="deleteClick(item.id)">Delete</button>
         </div>
 
       </div>
-      <form v-if="currentlyEditing === item.id">
-        <input id="edit-title-input" type="text" :value="item.title">
-        <button> Submit</button>
+      <item-edit-form
+      v-if="currentlyEditing === item.id"
+      :id="item.id"
+      :initialTitle="item.title"
 
-      </form>
+      />
 
 
     </li>
