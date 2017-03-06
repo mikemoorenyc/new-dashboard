@@ -46,7 +46,7 @@ function jsProcessor(blob, dest, newName) {
 
 //SASS CSS TASK
 gulp.task('sass', function () {
-  sassProcessor(['sass/main.scss', 'sass/expanded.scss','sass/ie-fixes.scss','sass/editor-styles.scss'], '../'+buildDir+'/css');
+  sassProcessor(['sass/main.scss', 'sass/todolist.scss','sass/expanded.scss','sass/ie-fixes.scss','sass/editor-styles.scss'], '../'+buildDir+'/css');
 });
 
 //JS TASK

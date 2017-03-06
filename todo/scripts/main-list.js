@@ -7,6 +7,9 @@ Vue.component('main-list', {
     },
     deleteClick: function(id) {
       App.bus.$emit('delete-item',id)
+    },
+    updateChecked: function(id,state) {
+      App.bus.$emit('update-checked',id,state);
     }
   }
 

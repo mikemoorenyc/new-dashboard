@@ -8,8 +8,7 @@ if (is_user_logged_in()) {
 
 function update_values() {
   $oldVal = get_post_meta($_POST['pageid'], 'listItems', true);
-  $newVal = json_encode($_POST['listItems']);
-
+  $newVal = json_encode($_POST['listItems'], true);
 
 
   if($newVal === $oldVal) {
@@ -21,7 +20,7 @@ function update_values() {
     die();
   } else {
     update_post_meta($_POST['pageid'], 'listItems', $newVal);
-    echo "{update: true, listItems: ".$newVal."}";
+    echo '{"updated": true, "listItems": '.$newVal.'}';
   }
 
   die();

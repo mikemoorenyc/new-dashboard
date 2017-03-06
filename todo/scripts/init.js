@@ -3,14 +3,15 @@ $(document).ready(function(){
     el: "#entry",
     data: {
       userInfo: App.userInfo,
-      listItems: App.listItems,
+      listItems: dataConverter(App.listItems),
       lastModified: App.lastEdited,
-      currentlyEditing: false
+      currentlyEditing: false,
+      saving: false
     },
     watch: {
       listItems: {
         handler: function(newVal,oldVal) {
-
+          //this.ajaxUpdate(newVal)
 
           //this.ajaxUpdate();
         },
@@ -25,40 +26,55 @@ $(document).ready(function(){
       this.$on('delete-item',function(id){
         this.deleteItem(id);
       });
+      this.$on('update-checked',function(id,state){
+        this.updateChecked(id,state);
+      });
     },
     methods: {
+
       ajaxUpdate: _.debounce(
-      function () {
+      function (tester) {
+        this.saving = {
+          text:'Saving'
+        }
+        //console.log(tester);
         $.ajax({
           type: 'POST',
           dataType: 'json',
           url:App.ajaxURL ,
               data: {
                   'action': 'updatevalues', //calls wp_ajax_nopriv_ajaxlogin
-                  'listItems': this.listItems,
+                  'listItems': tester,
                   'pageid': App.pageid
                 },
 
               success: function(data){
-                console.log(data);
+
+
                 if(!data.updated) {
                   console.log('no update');
                   return false;
                 } else {
                   console.log('updated!');
-                  //this.listItems = data.listItems;
+
+                  this.listItems = dataConverter(data.listItems)
                   return false;
                 }
 
 
               }.bind(this),
               error:function(data) {
-                console.log('error');
-                console.log(data);
+
               },
-              complete: function() {
-                console.log('done');
-              }
+              complete: function(data) {
+
+                this.saving = {
+                  text: 'Saved'
+                }
+                setTimeout(function(){
+                  this.saving = false;
+                }.bind(this),1000)
+              }.bind(this)
           });
 
       },
@@ -86,6 +102,19 @@ $(document).ready(function(){
 
         this.currentlyEditing = false;
       },
+      updateChecked(id,state) {
+        var newArray = this.listItems.slice();
+        var key = this.findKey(id);
+        var newItem = this.listItems[key];
+        if(state) {
+          newItem.checkedBy = this.userInfo;
+        } else {
+          newItem.checkedBy = false;
+        }
+        newArray[key] = newItem;
+        this.listItems = newArray;
+        this.currentlyEditing = false;
+      },
       updateStatus: function(userInfo,listItems,lastModified) {
         this.userInfo = userInfo;
         this.listItems = listItems;
@@ -109,7 +138,8 @@ $(document).ready(function(){
     },
     template: (`
       <div>
-      <button @click.prevent="ajaxUpdate">Save</button>
+      <button style="display:none;" @click.prevent="ajaxUpdate(listItems)">Save</button>
+      <div style="display:none;" class="save-status"v-if="saving!==false">{{saving.text}}</div>
         <app-header v-if="userInfo !== false " :userInfo="userInfo" :lastModified="lastModified" v-on:additem="addItem"/>
         <main-form v-if="userInfo === false" v-on:updatestatus="updateStatus"/>
         <main-list

@@ -29,7 +29,8 @@ if ( is_user_logged_in() ) {
  <meta charset="UTF-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-
+ <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<link rel="stylesheet" href="<?php echo get_bloginfo('template_url');?>/css/todolist.css?v=<?php echo time();?>">
 <title><?php echo get_the_title();?></title>
 <script>
 var App = {
@@ -38,14 +39,17 @@ var App = {
   lastModified: <?php echo $lastModified;?>,
   pageid: <?php echo get_the_ID();?>,
   ajaxURL : "<?php echo admin_url( 'admin-ajax.php' );?>",
-  currentlyEditing: false
+  currentlyEditing: false,
+  saving: false
 }
-App.listItems = [];
+
+
 </script>
+
 </head>
 
 <body>
-<a target="_blank" href="<?php echo wp_logout_url( ); ?> ">Logout</a>
+<a target="_blank" href="<?php echo wp_logout_url( ); ?> " style="display:none;">Logout</a>
 <div id="entry"></div>
 <script src="<?php echo get_bloginfo('template_url');?>/plugin-debounce.js"></script>
 <script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -91,7 +95,7 @@ App.listItems = [];
   <?php include 'template-thelist.php';?>
 </script>
 
-
+<div id="data-return"></div>
 </body>
 
 
