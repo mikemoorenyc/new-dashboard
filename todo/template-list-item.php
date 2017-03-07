@@ -21,10 +21,10 @@
     <?php include 'icon-drag-handle.php'; ?>
   </div>
   <div class="controls">
-    <button class="icon-button edit" >
+    <button class="icon-button edit" @click.prevent="editClick(item.id)">
       <?php include 'icon-edit.php';?>
     </button>
-    <button class="icon-button delete" >
+    <button class="icon-button delete" @click.prevent="deleteClick(item.id)">
       <?php include 'icon-delete.php';?>
     </button>
   </div>
