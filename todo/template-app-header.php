@@ -2,7 +2,9 @@
 <div style="display:none;"class="greeting">Hi, {{userInfo.firstname}}</div>
 
   <input type="text" id="add_text" value="" placeholder="Add a new to-do item" v-model="title"/>
-  <button :disabled="!title.length" class="icon-button" style="background:green;"></button>
+  <button :disabled="!title.length" class="icon-button" >
+    <?php include 'icon-add.php';?>
+  </button>
 
 
 </form>

@@ -52,6 +52,7 @@ var App = {
 <a target="_blank" href="<?php echo wp_logout_url( ); ?> " style="display:none;">Logout</a>
 <div id="entry"></div>
 <script src="<?php echo get_bloginfo('template_url');?>/plugin-debounce.js"></script>
+<script src="<?php echo get_bloginfo('template_url');?>/plugin-hammer.js"></script>
 <script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/sortable/1.4.2/Sortable.min.js"></script>
@@ -93,6 +94,9 @@ var App = {
 </script>
 <script type="x-template" id="main-list-template">
   <?php include 'template-thelist.php';?>
+</script>
+<script type="x-template" id="template-list-item">
+  <?php include 'template-list-item.php';?>
 </script>
 
 <div id="data-return"></div>

@@ -16,7 +16,7 @@ body {
     position: absolute;
     left:50%;
     top: 50%;
-    margin: -12px 0 0 -12px;
+    transform: translate(-50%,-50%);
   }
 }
 form#app-header {
@@ -40,9 +40,14 @@ form#app-header {
   }
   button.icon-button {
     position: absolute;
-    right: 15px;
+    right: 5px;
     top: 50%;
     margin-top:-24px;
+    > svg {
+      fill:white;
+      width: 35px;
+      height:35px;
+    }
     &[disabled] {
       opacity:.25;
     }
@@ -56,29 +61,68 @@ form#app-header {
   max-width: 500px;
   padding-top:(128px - 72px) ;
 }
+.item-container {
+    border-bottom:1px solid #e5e5e5;
+}
+.sortable-chosen:not(.sortable-ghost) {
+    border: 0 !important;
+}
 #main-list {
+
   .listItem {
     height: 60px;
     position: relative;
-    padding: 0 16px 0 72px;
-    > div {
-      &:before {
-        display: inline-block;
-        content:'';
-        height: 60px;
-        width: 0px;
-        vertical-align: middle;
+    padding: 0 48px 0 68px;
+    transition: transform .25s;
+
+    &.swiped {
+      transform: translateX(-(48px*2));
+    }
+    &:before {
+      display: inline-block;
+      content:'';
+      height: 60px;
+      width: 0px;
+      vertical-align: middle;
+    }
+    .drag-handle {
+      position: absolute;
+      right: 0;
+      top:50%;
+      margin-top: -24px;
+      >svg {
+        fill: rgba(black,.25)
       }
     }
     .checkbox {
-      background:blue;
+
       position: absolute;
-      left: 16px;
+      left: 10px;
       top: 50%;
       margin-top: -24px;
+      &.unchecked {
+        > svg {
+          fill: rgba(black,.25)
+        }
+      }
     }
     .controls {
-      display: none;
+      position: absolute;
+      right: -(48px*2);
+      top: 0;
+      letter-spacing: -4px;
+      .icon-button {
+        height: 60px;
+        &.delete {
+          background:#f03e3e;
+        }
+        &.edit {
+          background:#1c7cd6;
+        }
+        svg {
+          fill:white;
+        }
+      }
     }
     .text {
       display:inline-block;
