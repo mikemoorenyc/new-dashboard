@@ -29,6 +29,9 @@ $(document).ready(function(){
       this.$on('update-checked',function(id,state){
         this.updateChecked(id,state);
       });
+      this.$on('update-editing',function(id){
+        this.currentlyEditing = id;
+      });
     },
     methods: {
 
