@@ -123,10 +123,6 @@ $(document).ready(function(){
         this.listItems = listItems;
         this.lastModified = lastModified;
       },
-      setEditing: function(id) {
-
-        this.currentlyEditing = id;
-      },
       addItem: function(title) {
         var newArray = this.listItems.slice();
         newArray.unshift({
@@ -148,7 +144,7 @@ $(document).ready(function(){
         <main-list
           :listItems="listItems"
           :currentlyEditing="currentlyEditing"
-          v-on:editing="setEditing"
+
         />
 
       </div>
