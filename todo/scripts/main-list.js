@@ -9,7 +9,9 @@ Vue.component('main-list', {
       swiped: false
     }
   },
-
+  mounted: function(){
+    $('body,html').scrollTop(0);
+  },
   methods: {
     updateSwipe:function(id) {
       this.swiped = id;

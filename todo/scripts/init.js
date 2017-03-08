@@ -4,6 +4,7 @@ $(document).ready(function(){
     data: {
       userInfo: App.userInfo,
       listItems: dataConverter(App.listItems),
+      listCheck: [],
       lastModified: App.lastEdited,
       currentlyEditing: false,
       saving: false
@@ -11,6 +12,13 @@ $(document).ready(function(){
     watch: {
       listItems: {
         handler: function(newVal,oldVal) {
+          $("#data-return").html('');
+          $("#data-return").append(JSON.stringify(newVal)+'<br/><br/>');
+          $("#data-return").append(this.listCheck+'<br/><br/>');
+          if(this.listCheck !== JSON.stringify(newVal)) {
+            this.ajaxUpdate(newVal)
+          }
+          this.listCheck =JSON.stringify(newVal);
           //this.ajaxUpdate(newVal)
 
           //this.ajaxUpdate();
@@ -20,6 +28,7 @@ $(document).ready(function(){
 
     },
     created:function(){
+      this.listCheck = JSON.stringify(this.listItems);
       this.$on('update-item',function(id,title){
         this.updateItem(id,title);
       });
@@ -40,7 +49,7 @@ $(document).ready(function(){
         this.saving = {
           text:'Saving'
         }
-        //console.log(tester);
+
         $.ajax({
           type: 'POST',
           dataType: 'json',
@@ -71,19 +80,14 @@ $(document).ready(function(){
               },
               complete: function(data) {
 
-                this.saving = {
-                  text: 'Saved'
-                }
-                setTimeout(function(){
-                  this.saving = false;
-                }.bind(this),1000)
+                this.saving = false;
               }.bind(this)
           });
 
       },
       // This is the number of milliseconds we wait for the
       // user to stop typing.
-      500
+      2000
     ),
       findKey: function(id) {
           return this.listItems.map(function(x){
@@ -115,12 +119,12 @@ $(document).ready(function(){
           newItem.checkedBy = false;
         }
         newArray[key] = newItem;
-        this.listItems = newArray;
+        this.listItems = newArray.slice();
         this.currentlyEditing = false;
       },
       updateStatus: function(userInfo,listItems,lastModified) {
         this.userInfo = userInfo;
-        this.listItems = listItems;
+        this.listItems = dataConverter(listItems);
         this.lastModified = lastModified;
       },
       addItem: function(title) {
@@ -133,13 +137,14 @@ $(document).ready(function(){
           checkedBy: false
         })
         this.listItems = newArray;
+        $('body,html').scrollTop(0);
       }
     },
     template: (`
       <div id="outer-container" :class="{login: userInfo === false}">
       <button style="display:none;" @click.prevent="ajaxUpdate(listItems)">Save</button>
       <div style="display:none;" class="save-status"v-if="saving!==false">{{saving.text}}</div>
-        <app-header v-if="userInfo !== false " :userInfo="userInfo" :lastModified="lastModified" v-on:additem="addItem"/>
+        <app-header v-if="userInfo !== false " :saving="saving" :userInfo="userInfo" :lastModified="lastModified" v-on:additem="addItem"/>
         <main-form v-if="userInfo === false" v-on:updatestatus="updateStatus"/>
         <main-list
           v-if="userInfo !== false"

@@ -46,6 +46,10 @@ var App = {
 
 </script>
 
+<meta name="apple-mobile-web-app-title" content="M&D Todos">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
 </head>
 
 <body>
@@ -63,33 +67,47 @@ var App = {
 <script src="<?php echo get_bloginfo('template_url');?>/todo/main.js?v=<?php echo time();?>"></script>
 
 <script type="text/x-template" id="login-template">
-<div>
 
-  <form id="login-form" action="<?php echo admin_url( 'admin-ajax.php' );?>" method="post" >
+
+  <form @submit.prevent="submit" id="login-form" action="<?php echo admin_url( 'admin-ajax.php' );?>" method="post" >
     <h2>Please log in first</h2>
-    <input type="text" v-model="email" required placeholder="Email Address" />
-    <input v-model="password" type="password" placeholder="Password" />
-    <button @click.prevent="submit">Submit</button>
-    <a target="_blank" href="<?php echo wp_lostpassword_url(); ?>">Forgot your password?</a>
+    <label>Email address</label>
+    <input class="text-field" type="email" v-model="email" required  />
+    <label>Password</label>
+    <input v-model="password" class="text-field" type="password" required  />
+    <button class="submit-button">Log In</button>
+    <div class="forgot">
+      <a target="_blank" href="<?php echo wp_lostpassword_url(); ?>">Forgot your password?</a>
+    </div>
     <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+
+    <div v-if="modal !== false" id="form-modal">
+      <div class="loading centerer" v-if="modal.status === 'loading'">
+
+        Logging you in
+        <div class="loader-bar"></div>
+      </div>
+      <div class="result centerer" v-if="modal.status == 'error' || modal.status == 'success'">
+        <div v-if="modal.status == 'error'" class="icon error">
+          <?php include get_template_directory().'/icon_error_outline.php';?>
+        </div>
+        <div v-if="modal.status == 'success'" class="icon">
+          <?php
+          $svg = file_get_contents(get_template_directory().'/icon_check.php');
+          echo str_replace('<svg fill="#000000"','<svg :fill="modal.color"',$svg);
+
+           ?>
+        </div>
+        <div v-if="modal.status=='error'">We couldn't log you in.<br/><a href="#" @click.prevent="reset">Try again.</a></div>
+        <div v-if="modal.status=='success'" v-html="modal.text"></div>
+      </div>
+
+
+    </div>
+
   </form>
-  <transition>
-  <div id="form-modal" v-if="modal!== false" :class="modal.status">
-    <div class="loading" v-if="modal.status=='loading'">
-      loading..
-    </div>
 
-    <div class="error-msg" v-if="modal.status == 'error'" >
-      <div class="text">Couldn't log you in</div>
-      <button @click.prevent="reset">Try Again</button>
 
-    </div>
-    <div class="success-msg" v-if="modal.status == 'success'">
-      <div class="msg" v-html="modal.text"></div>
-    </div>
-  </div>
-  </transition>
-</div>
 </script>
 
 <script type="text/x-template" id="app-header-template">
@@ -102,7 +120,7 @@ var App = {
   <?php include 'template-list-item.php';?>
 </script>
 
-<div id="data-return"></div>
+<!--<div id="data-return" style="position:fixed; background:red; width:100%; left:0;bottom:0;"></div>-->
 </body>
 
 

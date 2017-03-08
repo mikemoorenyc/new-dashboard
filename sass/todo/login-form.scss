@@ -7,5 +7,84 @@ form#login-form {
   width: 400px;
   max-width: calc(100% - 45px);
   box-shadow: 0 -2px 25px 0 rgba(0, 0, 0, 0.15), 0 13px 25px 0 rgba(0, 0, 0, 0.3);
-  padding: 25px 16px;
+  padding: 22px;
+  text-align: center;
+  > h2 {
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: .5em;
+  }
+  > label, > input.text-field {
+    display: block;
+    text-align:left;
+  }
+  > label {
+    font-size: 12px;
+    margin-bottom: .25em;
+    text-transform: uppercase;
+  }
+  >input.text-field {
+    border: 1px solid #e5e5e5;
+    line-height: 40px;
+    font-size: 16px;
+    width: 100%;
+    padding: 0 16px;
+    margin-bottom:1em;
+  }
+  button.submit-button {
+    display: inline-block;
+    background: $main-purple;
+    line-height: 36px;
+    color:white;
+    font-size: 14px;
+    border-radius:2px;
+    padding: 0 16px;
+    text-transform: uppercase;
+  }
+  .forgot {
+    margin-top: 1em;
+    font-size: 12px;
+  }
+  #form-modal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: white;
+    .centerer {
+      position: absolute;
+      left:50%;
+      top:50%;
+      font-size: 14px;
+      transform: translate(-50%,-50%);
+    }
+    .loader-bar {
+      width: 100px;
+      margin: 10px auto 0;
+    }
+    .result {
+      font-size: 16px;
+      .icon >svg {
+        display: block;
+        width: 100px;
+        height: 100px;
+        margin:0 auto;
+        animation: iconGrow .15s;
+      }
+      .icon.error svg {
+        fill: $danger-color;
+      }
+    }
+  }
+}
+@keyframes iconGrow {
+  0% {
+
+    transform: scale(0);
+
+  }
+  100% {
+    transform: scale(1);
+  }
 }

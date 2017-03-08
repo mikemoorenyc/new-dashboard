@@ -1,6 +1,6 @@
 Vue.component('app-header', {
   template: '#app-header-template',
-  props: ["userInfo", "lastModified"],
+  props: ["userInfo", "lastModified", 'saving'],
   data: function() {
     return {
       title:''
@@ -8,6 +8,9 @@ Vue.component('app-header', {
   },
   methods: {
     addClick: function() {
+      if(this.title.length == 0) {
+        return false;
+      }
       this.$emit('additem', this.title)
       this.title = '';
     }

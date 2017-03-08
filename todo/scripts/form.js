@@ -15,10 +15,15 @@ Vue.component('main-form', {
 
     },
     submit: function(){
+      $("form#login-form input.text-field").each(function(){
+        $(this).blur();
+      });
       this.modal = {
         status: 'loading',
         text:'loading'
       }
+
+
       $.ajax({
         type: 'POST',
         dataType: 'json',
@@ -36,7 +41,8 @@ Vue.component('main-form', {
                 if(data.loggedin){
                   this.modal = {
                     status: 'success',
-                    text: 'You&rsquo;re logged in, '+data.userInfo.firstname
+                    text: 'You&rsquo;re logged in, '+data.userInfo.firstname,
+                    color: data.userInfo.color
                   }
                   setTimeout(function(){
                     this.$emit('updatestatus', data.userInfo, data.listData.listItems,data.listData.lastModified)
@@ -46,6 +52,11 @@ Vue.component('main-form', {
                  this.modal = {
                    status: 'error'
                  }
+                 setTimeout(function(){
+                   if(this.modal.status == 'error');
+                   this.reset();
+                 }.bind(this),2000)
+
                 }
             }.bind(this)
         });
