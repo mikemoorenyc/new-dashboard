@@ -10,6 +10,7 @@
       :item='item'
       :swiped="swiped"
       v-on:swipeChange="updateSwipe"
+      
       />
       <item-edit-form
       v-if="currentlyEditing === item.id"

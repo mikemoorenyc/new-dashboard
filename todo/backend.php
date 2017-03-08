@@ -2,7 +2,8 @@
 include 'author-color.php';
 include 'getlistdata.php';
 include 'updateValues.php';
-
+include 'ios_sizes.php';
+include 'background-update.php';
 function ajax_login_init() {
   add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
 }

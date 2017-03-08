@@ -41,6 +41,9 @@ $(document).ready(function(){
       this.$on('update-editing',function(id){
         this.currentlyEditing = id;
       });
+      this.$on('background-update',function(listItems){
+        this.listItems = dataConverter( listItems);
+      });
     },
     methods: {
 
@@ -150,7 +153,7 @@ $(document).ready(function(){
           v-if="userInfo !== false"
           :listItems="listItems"
           :currentlyEditing="currentlyEditing"
-
+          :saving="saving"
         />
 
       </div>

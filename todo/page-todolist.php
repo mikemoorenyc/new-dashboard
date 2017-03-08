@@ -46,6 +46,57 @@ var App = {
 
 </script>
 
+<?php
+$icons = array(180,120,167,152);
+$launch = array(
+  array(1080,1920),
+  array(750,1334),
+  array(640,1136),
+  array(2048,2732),
+  array(1536,2048)
+);
+$icon_id = get_option( 'ios_icon', '' );
+$launch_id =  get_option( 'launch_screen', '' );
+$looper = 0;
+if(!empty($icon_id)) {
+  foreach($icons as $i) {
+    $img = wp_get_attachment_image_src( $icon_id, 'icon_'.$i );
+    if(!empty($img)) {
+      if($looper === 0) {
+        ?>
+        <link rel="apple-touch-icon" href="<?php echo $img[0];?>">
+        <?php
+      }
+      ?>
+      <link rel="apple-touch-icon" sizes="<?php echo $i;?>x<?php echo $i;?>" href="<?php echo $img[0];?>">
+      <?php
+
+      $looper++;
+    }
+
+  }
+}
+if(!empty($launch_id)) {
+  $looper = 0;
+  foreach($launch as $l) {
+    $img = wp_get_attachment_image_src( $launch_id, 'launch_'.$l[0] );
+    if(!empty($img)) {
+      if($looper === 0) {
+        ?>
+        <link rel="apple-touch-startup-image" href="<?php echo $img[0];?>">
+        <?php
+      }
+      ?>
+      <link rel="apple-touch-startup-image" sizes="<?php echo $l[0];?>x<?php echo $l[1];?>" href="<?php echo $img[0];?>">
+      <?php
+      $looper++;
+    }
+  }
+}
+
+
+ ?>
+
 <meta name="apple-mobile-web-app-title" content="M&D Todos">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -113,10 +164,10 @@ var App = {
 <script type="text/x-template" id="app-header-template">
     <?php include 'template-app-header.php';?>
 </script>
-<script type="x-template" id="main-list-template">
+<script type="text/x-template" id="main-list-template">
   <?php include 'template-thelist.php';?>
 </script>
-<script type="x-template" id="template-list-item">
+<script type="text/x-template" id="template-list-item">
   <?php include 'template-list-item.php';?>
 </script>
 
