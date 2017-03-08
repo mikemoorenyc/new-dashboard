@@ -136,12 +136,13 @@ $(document).ready(function(){
       }
     },
     template: (`
-      <div>
+      <div id="outer-container" :class="{login: userInfo === false}">
       <button style="display:none;" @click.prevent="ajaxUpdate(listItems)">Save</button>
       <div style="display:none;" class="save-status"v-if="saving!==false">{{saving.text}}</div>
         <app-header v-if="userInfo !== false " :userInfo="userInfo" :lastModified="lastModified" v-on:additem="addItem"/>
         <main-form v-if="userInfo === false" v-on:updatestatus="updateStatus"/>
         <main-list
+          v-if="userInfo !== false"
           :listItems="listItems"
           :currentlyEditing="currentlyEditing"
 

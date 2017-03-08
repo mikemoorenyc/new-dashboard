@@ -4,6 +4,7 @@ body {
   background:#e5e5e5;
   font-family: 'Roboto', sans-serif;
   line-height: 1.5;
+  min-height: 100vh;
 }
 .icon-button {
   position: relative;
@@ -66,6 +67,9 @@ form#app-header {
 }
 .sortable-chosen:not(.sortable-ghost) {
     border: 0 !important;
+    .controls {
+      display:none;
+    }
 }
 #main-list {
 
@@ -144,3 +148,6 @@ form#app-header {
     }
   }
 }
+
+@import 'item-edit-form';
+@import 'login-form';

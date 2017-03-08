@@ -49,8 +49,10 @@ var App = {
 </head>
 
 <body>
-<a target="_blank" href="<?php echo wp_logout_url( ); ?> " style="display:none;">Logout</a>
+
 <div id="entry"></div>
+<a target="_blank" href="<?php echo wp_logout_url( ); ?> " style="position:fixed; left:10px; bottom:10px;">Logout</a>
+
 <script src="<?php echo get_bloginfo('template_url');?>/plugin-debounce.js"></script>
 <script src="<?php echo get_bloginfo('template_url');?>/plugin-hammer.js"></script>
 <script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -64,6 +66,7 @@ var App = {
 <div>
 
   <form id="login-form" action="<?php echo admin_url( 'admin-ajax.php' );?>" method="post" >
+    <h2>Please log in first</h2>
     <input type="text" v-model="email" required placeholder="Email Address" />
     <input v-model="password" type="password" placeholder="Password" />
     <button @click.prevent="submit">Submit</button>

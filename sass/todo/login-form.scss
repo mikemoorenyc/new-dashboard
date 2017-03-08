@@ -1,0 +1,11 @@
+form#login-form {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  background:#fff;
+  width: 400px;
+  max-width: calc(100% - 45px);
+  box-shadow: 0 -2px 25px 0 rgba(0, 0, 0, 0.15), 0 13px 25px 0 rgba(0, 0, 0, 0.3);
+  padding: 25px 16px;
+}

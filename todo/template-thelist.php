@@ -15,6 +15,7 @@
       v-if="currentlyEditing === item.id"
       :id="item.id"
       :initialTitle="item.title"
+      :currentlyEditing = 'currentlyEditing'
 
       />
 

@@ -17,7 +17,7 @@
       <span v-if="item.checkedBy !== false">{{item.checkedBy.firstname}}</span>
     </div>
   </div>
-  <div v-show="!swiped" class="icon-button drag-handle">
+  <div v-show="!swiped && !currentlyEditing" class="icon-button drag-handle">
     <?php include 'icon-drag-handle.php'; ?>
   </div>
   <div class="controls">
