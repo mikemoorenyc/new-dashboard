@@ -12,9 +12,10 @@ Vue.component('main-list', {
   mounted: function(){
     $('body,html').scrollTop(0);
     this.backgroundUpdate();
-    setTimeout(function(){
+    setInterval(function(){
+    
       this.backgroundUpdate();
-    }.bind(this),(20*1000))
+    }.bind(this),(15*1000))
   },
   methods: {
     backgroundUpdate:function() {
@@ -37,7 +38,7 @@ Vue.component('main-list', {
               if(this.saving !== false || this.currentlyEditing !== false) {
                 return false;
               }
-          
+
               App.bus.$emit('background-update',data.listItems);
 
 

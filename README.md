@@ -1,5 +1,7 @@
-#Things to do 
+#Things to do
+##TO-DO List
+- Set up empty state
+- Service Workers
 
-- Set up list management front end
-- Set up ajax login
-- Set up different options page
+##Main Dashboard
+- Everything

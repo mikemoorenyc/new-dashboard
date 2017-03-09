@@ -4,10 +4,13 @@ var buildDir = 'dash-prod';
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     replace = require('gulp-replace'),
-    plumber = require('gulp-plumber');
+    plumber = require('gulp-plumber'),
+    extract = require("gulp-html-extract");
 //CSS PROCESSING
 var sass = require('gulp-sass');
 var babel = require('gulp-babel');
+var rename = require("gulp-rename");
+var removeCode = require('gulp-remove-code');
 
 var del = require('del'); // rm -rf
 //
@@ -41,7 +44,25 @@ function jsProcessor(blob, dest, newName) {
 }
 //Generic html Processor
 
-
+gulp.task('vue-components',function(){
+  gulp.src('dashview/components/*.html')
+    .pipe(extract({
+    sel: "script",
+    strip: true
+    }))
+    .pipe(rename(function (path) {
+    path.dirname = "";
+    path.extname = ".js";
+    }))
+    .pipe(gulp.dest('../'+buildDir+'/dashview/components/js'));
+  gulp.src('dashview/components/*.html')
+  .pipe(removeCode({ production: true }))
+    .pipe(rename(function (path) {
+    path.dirname = "";
+    path.extname = ".html";
+    }))
+    .pipe(gulp.dest('../'+buildDir+'/dashview/components/templates'));
+});
 
 
 //SASS CSS TASK
