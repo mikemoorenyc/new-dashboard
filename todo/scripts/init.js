@@ -148,7 +148,7 @@ $(document).ready(function(){
           v-if="userInfo !== false"
           :listItems="listItems"
           :currentlyEditing="currentlyEditing"
-          :saving="saving"
+          :AjajxInProgress="AjajxInProgress"
         />
 
       </div>
