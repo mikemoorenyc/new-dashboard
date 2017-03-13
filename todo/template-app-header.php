@@ -7,5 +7,5 @@
     <?php include 'icon-add.php';?>
   </button>
 
-  <div v-if="saving !== false" class="loader-bar"></div>
+  <div v-if="AjaxInProgress > 0" class="loader-bar"></div>
 </form>
