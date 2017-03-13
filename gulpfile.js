@@ -56,7 +56,7 @@ gulp.task('vue-components',function(){
     }))
     .pipe(gulp.dest('../'+buildDir+'/dashview/components/js'));
   gulp.src('dashview/components/*.html')
-  .pipe(removeCode({ production: true }))
+  .pipe(removeCode({ script: true }))
     .pipe(rename(function (path) {
     path.dirname = "";
     path.extname = ".html";
