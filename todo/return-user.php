@@ -6,7 +6,7 @@ function returnUser($id) {
     $color = false;
   }
   return array(
-    "id" => $id,
+    "id" => intval($id),
     "firstname" => $user->user_firstname,
     "color" => $color
   );

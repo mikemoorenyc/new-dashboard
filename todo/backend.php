@@ -4,6 +4,8 @@ include 'getlistdata.php';
 include 'updateValues.php';
 include 'ios_sizes.php';
 include 'background-update.php';
+include 'post_type.php';
+include 'ajax_add_item.php';
 function ajax_login_init() {
   add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
 }

@@ -11,10 +11,10 @@ Vue.component('main-list', {
   },
   mounted: function(){
     $('body,html').scrollTop(0);
-    this.backgroundUpdate();
+  //  this.backgroundUpdate();
     setInterval(function(){
-    
-      this.backgroundUpdate();
+
+      //this.backgroundUpdate();
     }.bind(this),(15*1000))
   },
   methods: {

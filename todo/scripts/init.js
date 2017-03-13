@@ -3,7 +3,7 @@ $(document).ready(function(){
     el: "#entry",
     data: {
       userInfo: App.userInfo,
-      listItems: dataConverter(App.listItems),
+      listItems: App.listItems,
       listCheck: [],
       lastModified: App.lastEdited,
       currentlyEditing: false,
@@ -16,7 +16,7 @@ $(document).ready(function(){
           $("#data-return").append(JSON.stringify(newVal)+'<br/><br/>');
           $("#data-return").append(this.listCheck+'<br/><br/>');
           if(this.listCheck !== JSON.stringify(newVal)) {
-            this.ajaxUpdate(newVal)
+          //  this.ajaxUpdate(newVal)
           }
           this.listCheck =JSON.stringify(newVal);
           //this.ajaxUpdate(newVal)
@@ -48,7 +48,7 @@ $(document).ready(function(){
     methods: {
 
       ajaxUpdate: _.debounce(
-      function (tester) {
+      function (action,id,title,checked) {
         this.saving = {
           text:'Saving'
         }
@@ -58,14 +58,16 @@ $(document).ready(function(){
           dataType: 'json',
           url:App.ajaxURL ,
               data: {
-                  'action': 'updatevalues', //calls wp_ajax_nopriv_ajaxlogin
-                  'listItems': tester,
-                  'pageid': App.pageid
+                  'action': action, //calls wp_ajax_nopriv_ajaxlogin
+                  'id': id,
+                  'title': title,
+                  'checked': checked
                 },
 
               success: function(data){
-
-
+                console.log(data);
+                this.listItems = data.listItems;
+/*
                 if(!data.updated) {
                   console.log('no update');
                   return false;
@@ -75,7 +77,7 @@ $(document).ready(function(){
                   this.listItems = dataConverter(data.listItems)
                   return false;
                 }
-
+*/
 
               }.bind(this),
               error:function(data) {
@@ -140,6 +142,7 @@ $(document).ready(function(){
           checkedBy: false
         })
         this.listItems = newArray;
+        this.ajaxUpdate('addtodo','',title,'')
         $('body,html').scrollTop(0);
       }
     },

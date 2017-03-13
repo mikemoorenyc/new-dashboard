@@ -52,6 +52,10 @@ form#app-header {
     right: 5px;
     top: 50%;
     margin-top:-24px;
+    visibility: hidden;
+    &.active {
+      visibility: visible;
+    }
     > svg {
       fill:white;
       width: 35px;

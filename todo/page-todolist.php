@@ -6,6 +6,7 @@
 
 
 <?php
+
 $userInfo =json_encode(false);
 $listItems = json_encode(array());
 $lastModified = json_encode(false);
@@ -15,7 +16,7 @@ if ( is_user_logged_in() ) {
 
   $userInfo = json_encode(returnUser($current_user->ID));
   $listData = getListData(get_the_ID());
-  $listItems = json_encode($listData['listItems'],true);
+  $listItems = json_encode(get_all_todos());
   $lastModified = json_encode($listData['lastModified'],true);
 }
 

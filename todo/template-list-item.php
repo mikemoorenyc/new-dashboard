@@ -1,7 +1,9 @@
 <div class="listItem" :class="{swiped: swiped == item.id}">
+  
   <div v-if="item.checkedBy==false" @click.prevent="updateChecked(item.id,true)"  class="icon-button checkbox unchecked" :class="{checked: item.checked}">
     <?php include 'icon-checkbox-outline.php';?>
   </div>
+
   <div v-if="item.checkedBy!== false" @click.prevent="updateChecked(item.id,false)" class="icon-button checkbox checked" :class="{checked: item.checked}">
     <svg :fill="item.checkedBy.color" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 0h24v24H0z" fill="none"/>
