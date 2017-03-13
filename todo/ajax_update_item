@@ -28,4 +28,40 @@ function update_todo() {
     die();
   }
 }
+
+
+function updateChecked() {
+  $checked = $_POST['checked'];
+  $id = $_POST['id'];
+  $error = '{"status": "error"}';
+  if(empty($checked) || empty($id)) {
+    echo $error;
+    die();
+  }
+  if($checked === 'uncheck') {
+    wp_update_post( array(
+          'ID'=>$id,
+          'post_content' =>''
+        ) );
+    update_post_meta($id, 'checkedBy', '');
+  }
+  if(is_numeric($checked)) {
+    wp_update_post( array(
+          'ID'=>$id,
+          'post_content' =>'checked'
+        ) );
+    update_post_meta($id, 'checkedBy', $checked);
+  }
+
+
+  $response = array(
+    'status'=> 'success',
+    'listItems' => get_all_todos()
+  );
+  echo json_encode($response);
+
+
+
+  die();
+}
  ?>
