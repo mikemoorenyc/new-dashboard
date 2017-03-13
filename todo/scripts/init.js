@@ -7,7 +7,8 @@ $(document).ready(function(){
       listCheck: [],
       lastModified: App.lastEdited,
       currentlyEditing: false,
-      saving: false
+      saving: false,
+      AjajxInProgress: 0
     },
     watch: {
       listItems: {
@@ -47,11 +48,11 @@ $(document).ready(function(){
     },
     methods: {
 
-      ajaxUpdate: _.debounce(
-      function (action,id,title,checked) {
+      ajaxUpdate: function (action,id,title,checked) {
         this.saving = {
           text:'Saving'
         }
+        this.AjaxInProgress++;
 
         $.ajax({
           type: 'POST',
@@ -66,34 +67,25 @@ $(document).ready(function(){
 
               success: function(data){
                 console.log(data);
-                this.listItems = data.listItems;
-/*
-                if(!data.updated) {
-                  console.log('no update');
-                  return false;
-                } else {
-                  console.log('updated!');
-
-                  this.listItems = dataConverter(data.listItems)
-                  return false;
+                
+                if((this.AjaxInProgress - 1) === 0 && data.status === 'success') {
+                  
+                  this.listItems = data.listItems;
                 }
-*/
+
 
               }.bind(this),
               error:function(data) {
-
+                
               },
               complete: function(data) {
-
-                this.saving = false;
+                this.AjaxInProgress--;
+                
+                //this.saving = false;
               }.bind(this)
           });
 
       },
-      // This is the number of milliseconds we wait for the
-      // user to stop typing.
-      2000
-    ),
       findKey: function(id) {
           return this.listItems.map(function(x){
             return x.id;
@@ -150,7 +142,7 @@ $(document).ready(function(){
       <div id="outer-container" :class="{login: userInfo === false}">
       <button style="display:none;" @click.prevent="ajaxUpdate(listItems)">Save</button>
       <div style="display:none;" class="save-status"v-if="saving!==false">{{saving.text}}</div>
-        <app-header v-if="userInfo !== false " :saving="saving" :userInfo="userInfo" :lastModified="lastModified" v-on:additem="addItem"/>
+        <app-header v-if="userInfo !== false " :AjaxInProgress="AjaxInProgress" :saving="saving" :userInfo="userInfo" :lastModified="lastModified" v-on:additem="addItem"/>
         <main-form v-if="userInfo === false" v-on:updatestatus="updateStatus"/>
         <main-list
           v-if="userInfo !== false"
