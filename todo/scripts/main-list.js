@@ -1,6 +1,6 @@
 Vue.component('main-list', {
   template: '#main-list-template',
-  props: ["listItems","currentlyEditing", 'saving'],
+  props: ["listItems","currentlyEditing", 'AjajxInProgress'],
   data: function() {
     return {
       dragOptions: {
@@ -20,7 +20,7 @@ Vue.component('main-list', {
   methods: {
     backgroundUpdate:function() {
 
-      if(this.saving !== false) {
+      if(this.AjajxInProgress > 0) {
         return false;
       }
 
@@ -35,7 +35,7 @@ Vue.component('main-list', {
 
             success: function(data){
 
-              if(this.saving !== false || this.currentlyEditing !== false) {
+              if(this.AjajxInProgress > 0 || this.currentlyEditing !== false) {
                 return false;
               }
 
