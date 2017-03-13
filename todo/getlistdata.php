@@ -33,12 +33,16 @@ function get_all_todos() {
     $todoArray = array();
     $todos = $files_in_cat_query->get_posts();
     foreach($todos as $t) {
-
+      $checkedBy = false;
+       if($t->post_content === 'checked') {
+        $checkedBy = returnUser(get_post_meta($t->ID, 'checkedBy', true)); 
+       }
+      
       $item = array(
         'id' => $t->ID,
         'title' => $t->post_title,
         'addedBy' => returnUser($t->post_author),
-        'checkedBy' => false
+        'checkedBy' => $checkedBy
       );
       array_push($todoArray,$item);
     }
