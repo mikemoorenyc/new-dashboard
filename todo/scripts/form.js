@@ -45,7 +45,7 @@ Vue.component('main-form', {
                     color: data.userInfo.color
                   }
                   setTimeout(function(){
-                    this.$emit('updatestatus', data.userInfo, data.listData.listItems,data.listData.lastModified)
+                    this.$emit('updatestatus', data.userInfo, data.listItems)
                   }.bind(this),2000)
                 } else {
 

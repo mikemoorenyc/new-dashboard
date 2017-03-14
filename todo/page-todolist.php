@@ -9,15 +9,15 @@
 
 $userInfo =json_encode(false);
 $listItems = json_encode(array());
-$lastModified = json_encode(false);
+
 
 if ( is_user_logged_in() ) {
    $current_user = wp_get_current_user();
 
   $userInfo = json_encode(returnUser($current_user->ID));
-  $listData = getListData(get_the_ID());
+
   $listItems = json_encode(get_all_todos());
-  $lastModified = json_encode($listData['lastModified'],true);
+
 }
 
 
@@ -37,7 +37,7 @@ if ( is_user_logged_in() ) {
 var App = {
   userInfo: <?php echo $userInfo;?>,
   listItems: <?php echo $listItems;?>,
-  lastModified: <?php echo $lastModified;?>,
+  lastModified: null,
   pageid: <?php echo get_the_ID();?>,
   ajaxURL : "<?php echo admin_url( 'admin-ajax.php' );?>",
   currentlyEditing: false,

@@ -8,27 +8,14 @@ $(document).ready(function(){
       lastModified: App.lastEdited,
       currentlyEditing: false,
       saving: false,
-      AjajxInProgress: 0
+      AjaxInProgress: 0
     },
     watch: {
-      listItems: {
-        handler: function(newVal,oldVal) {
-          $("#data-return").html('');
-          $("#data-return").append(JSON.stringify(newVal)+'<br/><br/>');
-          $("#data-return").append(this.listCheck+'<br/><br/>');
-          if(this.listCheck !== JSON.stringify(newVal)) {
-          //  this.ajaxUpdate(newVal)
-          }
-          this.listCheck =JSON.stringify(newVal);
-          //this.ajaxUpdate(newVal)
 
-          //this.ajaxUpdate();
-        },
-        deep: true
-      },
 
     },
     created:function(){
+
       this.listCheck = JSON.stringify(this.listItems);
       this.$on('update-item',function(id,title){
         this.updateItem(id,title);
@@ -43,17 +30,21 @@ $(document).ready(function(){
         this.currentlyEditing = id;
       });
       this.$on('background-update',function(listItems){
-        this.listItems = dataConverter( listItems);
+        this.listItems = listItems;
+      });
+      this.$on('order-change',function(){
+        this.ajaxUpdate('shifttodos',null,null,null,null);
       });
     },
     methods: {
 
       ajaxUpdate: function (action,id,title,checked) {
+
         this.saving = {
           text:'Saving'
         }
         this.AjaxInProgress++;
-
+        var listItems = this.listItems;
         $.ajax({
           type: 'POST',
           dataType: 'json',
@@ -62,25 +53,26 @@ $(document).ready(function(){
                   'action': action, //calls wp_ajax_nopriv_ajaxlogin
                   'id': id,
                   'title': title,
-                  'checked': checked
+                  'checked': checked,
+                  'listItems': listItems
                 },
 
               success: function(data){
                 console.log(data);
-                
+
                 if((this.AjaxInProgress - 1) === 0 && data.status === 'success') {
-                  
+
                   this.listItems = data.listItems;
                 }
 
 
               }.bind(this),
               error:function(data) {
-                
+
               },
               complete: function(data) {
                 this.AjaxInProgress--;
-                
+
                 //this.saving = false;
               }.bind(this)
           });
@@ -95,6 +87,7 @@ $(document).ready(function(){
         this.listItems = this.listItems.filter(function(e){
             return e.id !== id;
           });
+        this.ajaxUpdate('deletetodo',id);
       },
       updateItem: function(id,title) {
         var newArray = this.listItems.slice();
@@ -103,7 +96,7 @@ $(document).ready(function(){
         newItem.title = title;
         newArray[key] = newItem;
         this.listItems = newArray;
-
+        this.ajaxUpdate('updatetodo',id,title)
         this.currentlyEditing = false;
       },
       updateChecked(id,state) {
@@ -117,12 +110,17 @@ $(document).ready(function(){
         }
         newArray[key] = newItem;
         this.listItems = newArray.slice();
+        if(state) {
+          this.ajaxUpdate('updatechecked',id,'', this.userInfo.id)
+        } else {
+          this.ajaxUpdate('updatechecked',id,'', 'uncheck')
+        }
         this.currentlyEditing = false;
       },
-      updateStatus: function(userInfo,listItems,lastModified) {
+      updateStatus: function(userInfo,listItems) {
         this.userInfo = userInfo;
-        this.listItems = dataConverter(listItems);
-        this.lastModified = lastModified;
+        this.listItems = listItems;
+
       },
       addItem: function(title) {
         var newArray = this.listItems.slice();
@@ -148,7 +146,7 @@ $(document).ready(function(){
           v-if="userInfo !== false"
           :listItems="listItems"
           :currentlyEditing="currentlyEditing"
-          :AjajxInProgress="AjajxInProgress"
+          :AjajxInProgress="AjaxInProgress"
         />
 
       </div>

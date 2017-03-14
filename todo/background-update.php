@@ -4,9 +4,11 @@ function background_update_init() {
 }
 add_action('init', 'background_update_init');
 function background_update() {
-  $oldVal = get_post_meta($_POST['pageid'], 'listItems', true);
 
-  echo '{"listItems": '.$oldVal.'}';
+
+  echo json_encode(array(
+    'listItems'=>get_all_todos()
+  ));
   die();
 }
 

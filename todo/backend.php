@@ -6,6 +6,10 @@ include 'ios_sizes.php';
 include 'background-update.php';
 include 'post_type.php';
 include 'ajax_add_item.php';
+include 'ajax_delete_item.php';
+include 'ajax_update_item.php';
+include 'ajax_shift_items.php';
+include 'ajax_update_checked.php';
 function ajax_login_init() {
   add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
 }
@@ -34,7 +38,7 @@ function ajax_login(){
       $userInfo = returnUser($user_signon->ID);
         echo json_encode(array('loggedin'=>true,
                                 'userInfo'=> $userInfo,
-                                'listData' => getListData($_POST['pageid'])
+                                'listItems' => get_all_todos()
                           ));
     }
 

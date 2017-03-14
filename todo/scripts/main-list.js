@@ -14,7 +14,7 @@ Vue.component('main-list', {
   //  this.backgroundUpdate();
     setInterval(function(){
 
-      //this.backgroundUpdate();
+      this.backgroundUpdate();
     }.bind(this),(15*1000))
   },
   methods: {
@@ -49,6 +49,9 @@ Vue.component('main-list', {
     },
     updateSwipe:function(id) {
       this.swiped = id;
+    },
+    orderChange:function(){
+      App.bus.$emit('order-change');
     }
   }
 

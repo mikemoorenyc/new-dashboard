@@ -1,6 +1,6 @@
 Vue.component('app-header', {
   template: '#app-header-template',
-  props: ["userInfo", "lastModified", 'saving'],
+  props: ["userInfo", "lastModified", 'saving', "AjaxInProgress"],
   data: function() {
     return {
       title:''
