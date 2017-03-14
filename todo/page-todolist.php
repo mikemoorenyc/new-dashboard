@@ -4,6 +4,19 @@
  */
 ?>
 
+<?php
+
+if($_GET['id'] === 'rest') {
+  echo json_encode(
+    array(
+      'listItems' => get_all_todos()
+    )
+  );
+  die();
+}
+
+ ?>
+
 
 <?php
 
