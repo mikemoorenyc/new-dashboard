@@ -1,10 +1,12 @@
 <!--removeIf(script)-->
 <script type="text/javascript">
-App.todolist = new Vue({
+Vue.component('todolist',{
   template: '#template-todolist',
-  data: {
-    listItems: App.initialTodos,
-    failed: false
+  data: function(){
+    return {
+      listItems: App.initialTodos,
+      failed: false
+    }
   },
   mounted: function() {
     this.backgroundUpdate();
