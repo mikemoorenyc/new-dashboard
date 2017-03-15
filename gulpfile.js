@@ -54,6 +54,10 @@ gulp.task('vue-components',function(){
     path.dirname = "";
     path.extname = ".js";
     }))
+    .pipe(plumber())
+    .pipe(babel({
+        presets: [["es2015", { "modules": false }]]
+    }))
     .pipe(gulp.dest('../'+buildDir+'/dashview/components/js'));
   gulp.src('dashview/components/*.html')
   .pipe(removeCode({ script: true }))
@@ -109,9 +113,10 @@ gulp.task('watch', function() {
     gulp.watch(['js/**/*.js', 'todo/scripts/*.js'], ['js']);
     gulp.watch(['sass/**/*'], ['sass']);
     gulp.watch('assets/fonts/**/*', ['fontdump']);
-    gulp.watch(['**/*.php', '**/*.html', 'plugin-*.js'], ['templatecrush']);
+    gulp.watch(['**/*.php', '**/*.html', '!dashview/components/*.html', 'plugin-*.js'], ['templatecrush']);
     gulp.watch(['style.css', 'screenshot.png'], ['wpdump']);
     gulp.watch(['todo/assets/**/*'], ['todoassets']);
+    gulp.watch(['dashview/components/*.html'], ['vue-components']);
 });
 
-gulp.task('build', ['wpdump','templatecrush','fontdump','js','sass']);
+gulp.task('build', ['wpdump','templatecrush','fontdump','js','sass', 'vue-components']);

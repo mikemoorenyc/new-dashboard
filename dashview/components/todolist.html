@@ -1,0 +1,38 @@
+<!--removeIf(script)-->
+<script type="text/javascript">
+App.todolist = new Vue({
+  template: '#template-todolist',
+  data: {
+    listItems: App.initialTodos
+  },
+  mounted: function() {
+    this.backgroundUpdate();
+    setInterval(function(){
+      this.backgroundUpdate();
+    }.bind(this),(1000*60)*5)
+  },
+  methods: {
+    backgroundUpdate: function() {
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url:App.wpAjaxURL ,
+        data: {
+            'action': 'backgroundupdate'
+        },
+        success: function(data){
+          this.listItems = data.listItems;
+          console.log('todolist updated');
+        }.bind(this)
+      });
+    }
+  }
+});
+</script>
+<!--endRemoveIf(script)-->
+<div class="todolist">
+  <div class="item" v-for="item in listItems">
+    <div class="box":class="{checked:item.checkedBy}"></div>
+    <div class="title">{{item.title}}</div>
+  </div>
+</div>

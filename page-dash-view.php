@@ -4,23 +4,6 @@
  */
 ?>
 <?php
-if(is_dir(get_template_directory().'/dashview/components/templates')) {
-  $dir = new DirectoryIterator(get_template_directory().'/dashview/components/templates');
-
-  foreach ($dir as $fileinfo) {
-      if (!$fileinfo->isDot()) {
-          $name = $fileinfo->getFilename();
-          $path_parts = pathinfo($name);
-          ?>
-          <script type="text/x-template" id="<?php echo $path_parts['filename'];?>">
-          <?php
-          include get_template_directory().'/dashview/components/templates/'.$path_parts['basename'];
-          ?>
-          </script>
-          <?php
-      }
-  }
-}
 
 
 $keys = explode("\n",get_option( 'api_keys', '' ));
@@ -55,8 +38,38 @@ var App = {
 
 </head>
 <body>
+<div id="todolist"></div>
+<?php
+
+if(is_dir(get_template_directory().'/dashview/components/templates')) {
+  $dir = new DirectoryIterator(get_template_directory().'/dashview/components/templates');
+
+  foreach ($dir as $fileinfo) {
+      if (!$fileinfo->isDot()) {
+          $name = $fileinfo->getFilename();
+          $path_parts = pathinfo($name);
+          ?>
+          <script type="text/x-template" id="template-<?php echo $path_parts['filename'];?>">
+          <?php
+          include get_template_directory().'/dashview/components/templates/'.$path_parts['basename'];
+          ?>
+          </script>
+          <?php
+      }
+  }
+}
 
 
+ ?>
+<script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="<?php echo  get_bloginfo('template_url');?>/js/main.js"></script>
+<script src="<?php echo  get_bloginfo('template_url');?>/component-maker.php"></script>
+<script>
+$(document).ready(function(){
+  AppInit();
+});
 
+</script>
 </body>
 </html>
