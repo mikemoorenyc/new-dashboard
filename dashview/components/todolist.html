@@ -27,7 +27,9 @@ App.todolist = new Vue({
           console.log('todolist updated');
         },
         error: function(data) {
-         this.failed = new Date();
+         if(!this.failed) {
+          this.failed = new Date(); 
+         }
         }
       }.bind(this));
     }
