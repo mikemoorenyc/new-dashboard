@@ -1,5 +1,8 @@
 function AppInit() {
-  App.todolist.$mount('#todolist')
+  new Vue({
+    el: '#todolist',
+    template: '<todolist/>'
+  });
 
 
 }
