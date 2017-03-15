@@ -3,7 +3,8 @@
 App.todolist = new Vue({
   template: '#template-todolist',
   data: {
-    listItems: App.initialTodos
+    listItems: App.initialTodos,
+    failed: false
   },
   mounted: function() {
     this.backgroundUpdate();
@@ -21,16 +22,20 @@ App.todolist = new Vue({
             'action': 'backgroundupdate'
         },
         success: function(data){
+          this.failed = false;
           this.listItems = data.listItems;
           console.log('todolist updated');
-        }.bind(this)
-      });
+        },
+        error: function(data) {
+         this.failed = new Date().getTime();
+        }
+      }.bind(this));
     }
   }
 });
 </script>
 <!--endRemoveIf(script)-->
-<div class="todolist">
+<div class="todolist module">
   <div class="item" v-for="item in listItems">
     <div class="box":class="{checked:item.checkedBy}"></div>
     <div class="title">{{item.title}}</div>
