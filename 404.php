@@ -1,5 +1,5 @@
 <?php
-$siteURL = get_site_url();
-header("Location: ".$siteURL);
+status_header( 404 );
+echo 'not found';
 die();
 ?>

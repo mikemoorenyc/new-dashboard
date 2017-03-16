@@ -1,12 +1,10 @@
 <!--removeIf(script)-->
 <script type="text/javascript">
-Vue.component('todolist',{
+App.todolist = new Vue({
   template: '#template-todolist',
-  data: function(){
-    return {
-      listItems: App.initialTodos,
-      failed: false
-    }
+  data: {
+    listItems: App.initialTodos,
+    failed: false
   },
   mounted: function() {
     this.backgroundUpdate();
@@ -17,23 +15,22 @@ Vue.component('todolist',{
   methods: {
     backgroundUpdate: function() {
       $.ajax({
-        type: 'POST',
+        type: 'GET',
         dataType: 'json',
-        url:App.wpAjaxURL ,
-        data: {
-            'action': 'backgroundupdate'
-        },
+        url:App.templateURL+'/listretriever.php',
+
         success: function(data){
-          this.failed = false;
+
           this.listItems = data.listItems;
-          console.log('todolist updated');
-        },
+
+        }.bind(this),
         error: function(data) {
-         if(!this.failed) {
-          this.failed = new Date(); 
-         }
-        }
-      }.bind(this));
+            if(!this.failed) {
+              this.failed = new Date();
+            }
+        }.bind(this)
+
+      });
     }
   }
 });
@@ -44,4 +41,5 @@ Vue.component('todolist',{
     <div class="box":class="{checked:item.checkedBy}"></div>
     <div class="title">{{item.title}}</div>
   </div>
+  <fail-pill :failed="this.failed"/>
 </div>

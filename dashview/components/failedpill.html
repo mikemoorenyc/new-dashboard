@@ -1,0 +1,25 @@
+<!--removeIf(script)-->
+<script type="text/javascript">
+Vue.component('fail-pill',{
+  template: '#template-failedpill',
+  props:['failed'],
+  data: function() {
+    return {
+      relative: hoursAgo(this.failed),
+      relativeInterval: null
+    }
+  },
+  mounted: function() {
+    this.relativeInterval = setInterval(function(){
+      this.relative = hoursAgo(this.failed);
+    }.bind(this),30*1000)
+  },
+  beforeDestroy: function() {
+    clearInterval(this.relativeInterval)
+  }
+})
+</script>
+<!--endRemoveIf(script)-->
+<div class="fail-pill" v-if="failed">
+  Last Updated: {{this.relative}}
+</div>

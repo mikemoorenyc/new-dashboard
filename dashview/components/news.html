@@ -1,0 +1,64 @@
+<!--removeIf(script)-->
+<script type="text/javascript">
+App.news = new Vue({
+  template: '#template-news',
+  data: {
+    newsItems: [],
+    failed: false,
+    backgroundInterval: null,
+    relativeInterval: null
+  },
+  mounted: function() {
+    this.backgroundUpdate();
+    this.backgroundInterval = setInterval(function(){
+      this.backgroundUpdate();
+    }.bind(this),(1000*60)*5)
+    this.relativeInterval = setInterval(function(){
+      this.updateRelative();
+    }.bind(this), (1000*30))
+  },
+  methods: {
+    backgroundUpdate: function() {
+      $.ajax({
+        type: 'GET',
+
+        url:App.templateURL+'/webproxy.php?id='+App.apiKeys.news,
+        success: function(data){
+          var newNews = [];
+          $(data).find('item').each(function(i,e){
+
+              var date = new Date($(e).find('pubDate').text())
+              newNews.push({
+                title: $(e).find('title').text(),
+                date: date,
+                relative: hoursAgo(date)
+              })
+          }.bind(this));
+          this.newsItems = newNews;
+        }.bind(this),
+        error: function(data) {
+          console.log(data);
+        }.bind(this)
+
+      });
+
+    },
+    updateRelative: function(){
+      this.newsItems.forEach(function(e,i){
+        this.newsItems[i].relative = hoursAgo(e.date)
+      }.bind(this));
+    }
+  }
+});
+</script>
+<!--endRemoveIf(script)-->
+<div class="news module">
+  <div v-for="item in newsItems">
+    {{item.title}}<br/>
+
+      {{item.relative}}
+  
+
+  </div>
+  <fail-pill :failed="this.failed"/>
+</div>

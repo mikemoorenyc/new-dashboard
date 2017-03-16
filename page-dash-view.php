@@ -28,7 +28,8 @@ foreach($keys as $k) {
 var App = {
   apiKeys : <?php echo json_encode($keyArray);?>,
   initialTodos : <?php echo json_encode(get_all_todos());?>,
-  wpAjaxURL : "<?php echo admin_url( 'admin-ajax.php' );?>"
+  wpAjaxURL : "<?php echo admin_url( 'admin-ajax.php' );?>",
+  templateURL: "<?php echo  get_bloginfo('template_url');?>"
 };
 
 
@@ -39,6 +40,8 @@ var App = {
 </head>
 <body>
 <div id="todolist"></div>
+<div id="news"></div>
+<div id="stocks"></div>
 <?php
 
 if(is_dir(get_template_directory().'/dashview/components/templates')) {
@@ -63,8 +66,8 @@ if(is_dir(get_template_directory().'/dashview/components/templates')) {
  ?>
 <script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script src="<?php echo  get_bloginfo('template_url');?>/js/main.js"></script>
-<script src="<?php echo  get_bloginfo('template_url');?>/component-maker.php"></script>
+<script src="<?php echo  get_bloginfo('template_url');?>/js/main.js?v=<?php echo time();?>"></script>
+<script src="<?php echo  get_bloginfo('template_url');?>/component-maker.php?v=<?php echo time();?>"></script>
 <script>
 $(document).ready(function(){
   AppInit();
