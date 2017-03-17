@@ -24,6 +24,7 @@ App.news = new Vue({
 
         url:App.templateURL+'/webproxy.php?id='+App.apiKeys.news,
         success: function(data){
+          this.failed = false;
           var newNews = [];
           $(data).find('item').each(function(i,e){
 
@@ -34,10 +35,17 @@ App.news = new Vue({
                 relative: hoursAgo(date)
               })
           }.bind(this));
+          newNews.sort(function(a, b) {
+              a =a.date;
+              b = b.date;
+              return a>b ? -1 : a<b ? 1 : 0;
+          });
           this.newsItems = newNews;
         }.bind(this),
         error: function(data) {
-          console.log(data);
+          if(!this.failed) {
+            this.failed = new Date();
+          }
         }.bind(this)
 
       });
@@ -57,7 +65,7 @@ App.news = new Vue({
     {{item.title}}<br/>
 
       {{item.relative}}
-  
+
 
   </div>
   <fail-pill :failed="this.failed"/>

@@ -20,7 +20,7 @@ App.todolist = new Vue({
         url:App.templateURL+'/listretriever.php',
 
         success: function(data){
-
+          this.failed = false;
           this.listItems = data.listItems;
 
         }.bind(this),

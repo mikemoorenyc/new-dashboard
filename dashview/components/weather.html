@@ -1,0 +1,123 @@
+<!--removeIf(script)-->
+<script type="text/javascript">
+App.weather = new Vue({
+  template: '#template-weather',
+  data: {
+    temp: '108',
+    feels: '88',
+    symbol: 'sunny',
+    forecast: 'Showers this evening becoming a steady rain overnight. Snow or sleet may mix in late. Low 38F.',
+    precip: '99',
+    hi: '108',
+    lo: '108',
+    failed: false,
+    backgroundInterval: null,
+  },
+  mounted: function() {
+    this.backgroundUpdate();
+    this.backgroundInterval = setInterval(function(){
+      this.backgroundUpdate();
+    }.bind(this),(1000*60)*5)
+
+  },
+  methods: {
+    successUpdate: function(newValues) {
+      this.failed = false;
+      this.temp = newValues.temp;
+      this.feels = newValues.feels;
+      this.forecast = newValues.forecast;
+      this.precip = newValues.precip;
+      this.hi = newValues.hi;
+      this.lo = newValues.lo;
+    },
+    backgroundUpdate: function() {
+      var success = 0;
+      var newValues = {};
+      var svg = '';
+
+      $.ajax({
+        type: 'GET',
+
+        url:App.apiKeys.weatherCurrent,
+        success: function(data){
+          success++;
+          var partlyCloudies = ['partlysunny', 'mostlycloudy', 'partlycloudy', 'mostlysunny'];
+          var current = data.current_observation;
+          var icon = current.icon;
+          //REMOVE NIGHT
+          icon = icon.replace('nt_', '');
+          //REMOVE CHANCE
+          icon = icon.replace('chance', '');
+          //Consolidate things
+          if ($.inArray(icon, partlyCloudies) !== -1) {
+            icon = 'partlycloudy';
+          }
+          if (icon == 'clear') {
+            icon = 'sunny';
+          }
+          if (icon == 'flurries') {
+            icon = 'snow';
+          }
+
+          //BRING BACK THE NIGHT
+          if (current.icon == 'nt_clear' || current.icon == 'nt_sunny') {
+            icon = 'moon';
+          }
+          if (icon == 'partlycloudy' && current.icon.indexOf('nt_') > -1) {
+            icon = 'mooncloud';
+          }
+
+          newValues.temp = Math.floor(current.temp_f);
+          newValues.symbol = icon;
+          newValues.feels = Math.floor(current.feelslike_f);
+          if(success == 2) {
+
+            this.successUpdate(newValues)
+          }
+
+        }.bind(this),
+        error: function(data) {
+          if(!this.failed) {
+            this.failed = new Date();
+          }
+        }.bind(this)
+
+      });
+      $.ajax({
+        type: 'GET',
+
+        url:App.apiKeys.weatherForecast,
+        success: function(data){
+          success++;
+           var forecast = data.forecast;
+          newValues.forecast = forecast.txt_forecast.forecastday[0].fcttext,
+          newValues.precip = forecast.txt_forecast.forecastday[0].pop,
+          newValues.hi =  Math.floor(forecast.simpleforecast.forecastday[0].high.fahrenheit),
+          newValues.lo = Math.floor(forecast.simpleforecast.forecastday[0].low.fahrenheit);
+          if(success == 2) {
+            this.successUpdate(newValues)
+          }
+
+        }.bind(this),
+        error: function(data) {
+          if(!this.failed) {
+            this.failed = new Date();
+          }
+        }.bind(this)
+
+      });
+
+    },
+    updateRelative: function(){
+      this.newsItems.forEach(function(e,i){
+        this.newsItems[i].relative = hoursAgo(e.date)
+      }.bind(this));
+    }
+  }
+});
+</script>
+<!--endRemoveIf(script)-->
+<div class="weather module">
+
+  <fail-pill :failed="this.failed"/>
+</div>
