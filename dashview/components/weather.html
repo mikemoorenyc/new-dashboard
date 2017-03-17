@@ -6,6 +6,7 @@ App.weather = new Vue({
     temp: '108',
     feels: '88',
     symbol: 'sunny',
+    symbolSVG: '',
     forecast: 'Showers this evening becoming a steady rain overnight. Snow or sleet may mix in late. Low 38F.',
     precip: '99',
     hi: '108',
@@ -17,18 +18,27 @@ App.weather = new Vue({
     this.backgroundUpdate();
     this.backgroundInterval = setInterval(function(){
       this.backgroundUpdate();
-    }.bind(this),(1000*60)*5)
+    }.bind(this),(1000*60)*20)
 
   },
   methods: {
     successUpdate: function(newValues) {
       this.failed = false;
+      this.symbolSVG = '';
       this.temp = newValues.temp;
       this.feels = newValues.feels;
       this.forecast = newValues.forecast;
       this.precip = newValues.precip;
       this.hi = newValues.hi;
       this.lo = newValues.lo;
+      this.symbol = newValues.symbol;
+      $.ajax({
+        type: 'GET',
+        url:App.templateURL+'/assets/fonts/icon_weather_'+newValues.symbol+'.svg',
+        success: function(data) {
+        this.symbolSVG = data;
+        }.bind(this)        
+      })
     },
     backgroundUpdate: function() {
       var success = 0;
@@ -118,6 +128,17 @@ App.weather = new Vue({
 </script>
 <!--endRemoveIf(script)-->
 <div class="weather module">
+  
+  <div class="weather-icon" :class="this.symbol" v-html="this.symbolSVG">
+    
+  </div>
+  <div class="temp">{{this.temp}}&deg;</div>
+  <div class="feels">{{this.feels}}&deg;</div>
+  <div class="forecast">{{this.forecast}}</div>
+  <div class="precip">{{this.precip}}%</div>
+  <div class="hilo">
+    <span class="hi">{{this.hi}}&deg;</span> / <span class="lo">{{this.lo}}&deg;</span>
+  </div>
 
   <fail-pill :failed="this.failed"/>
 </div>
