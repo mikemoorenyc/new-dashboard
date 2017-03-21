@@ -1,7 +1,10 @@
-#Things to do
-##TO-DO List
+Things to do
+=============
+TO-DO List
+------
 - Set up empty state
 - Service Workers
 
-##Main Dashboard
+Main Dashboard
+----
 - Everything
