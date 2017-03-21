@@ -29,3 +29,34 @@ function save_user_color( $user_id ) {
 
 
   ?>
+<?php
+add_action( 'show_user_profile', 'connect_calendar' );
+add_action( 'edit_user_profile', 'connect_calendar' );
+function connect_calendar( $user ) {
+  $calApi = get_the_author_meta( '_calendarapi', $user->ID );
+  ?>
+
+  <table class="form-table">
+<tbody><tr >
+	<th><label >Google Calendar</label></th>
+	<td>
+	<?php
+	if(empty($calApi)) {
+	?>
+		<a class="button button-primary" href="#" target="_blank">Connect Now!</a>
+	<?php
+		
+	} else {
+		?>
+		You're connected!
+		<?php
+	}
+	
+	?>
+	</td>
+</tr>
+
+
+</tbody></table>
+
+<?php }?>
