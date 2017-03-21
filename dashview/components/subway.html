@@ -30,11 +30,24 @@ App.subway= new Vue({
 
         url:App.templateURL+'/test-subway.php',
         success: function(data){
-          
+            this.failed = false;
+            var newTrains = [];
             var lines = $(data).find('subway line');
             $(lines).each(function(i,e){
-              console.log($(e).find('name').text());
+              var name = $(e).find('name').text();
+              var status = $(e).find('status').text();
+              if(name == 'L' || name == 'BDFM') {
+               if(name == 'BDFM') {
+                name = 'M'
+               }
+                newTrains.push({
+                  train: name,
+                  status: status
+                });
+                
+              }
             });
+            this.train = newTrains;
 
         }.bind(this),
         error: function(data) {
@@ -51,6 +64,13 @@ App.subway= new Vue({
 </script>
 <!--endRemoveIf(script)-->
 <div class="module subways ">
-
+  <div class="line" v-for="train in trains">
+    <div class="icon" :class="{'line'+train.name: true , danger:train.status !== 'GOOD SERVICE'}">
+      {{train.name}}
+    </div>
+    <div class="status" :class="{hidden: train.status === 'GOOD SERVICE'}">
+      {{train.status}}
+    </div>
+  </div>
   <fail-pill :failed="this.failed"/>
 </div>
