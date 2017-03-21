@@ -43,7 +43,7 @@ var App = {
 <div id="news"></div>
 <div id="stocks"></div>
 <div id="weather"></div>
-
+<div id="subway"></div>
 <?php
 
 if(is_dir(get_template_directory().'/dashview/components/templates')) {

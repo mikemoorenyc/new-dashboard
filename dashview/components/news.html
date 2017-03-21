@@ -22,7 +22,7 @@ App.news = new Vue({
       $.ajax({
         type: 'GET',
 
-        url:App.templateURL+'/webproxy.php?id='+App.apiKeys.news,
+        url:App.templateURL+'/test-news.php',
         success: function(data){
           this.failed = false;
           var newNews = [];

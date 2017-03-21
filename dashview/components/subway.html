@@ -1,0 +1,56 @@
+<!--removeIf(script)-->
+<script type="text/javascript">
+App.subway= new Vue({
+  template: '#template-subway',
+  data: {
+    trains: [
+      {
+        train: 'L',
+        status: 'GOOD SERVICE'
+      },
+      {
+        train: 'M',
+        status: 'GOOD SERVICE'
+      }
+    ],
+    failed: false
+  },
+  mounted: function() {
+    this.backgroundUpdate();
+    this.backgroundInterval = setInterval(function(){
+      this.backgroundUpdate();
+    }.bind(this),(1000*60)*5)
+
+  },
+  methods: {
+
+    backgroundUpdate: function() {
+      $.ajax({
+        type: 'GET',
+
+        url:App.templateURL+'/test-subway.php',
+        success: function(data){
+          
+            var lines = $(data).find('subway line');
+            $(lines).each(function(i,e){
+              console.log($(e).find('name').text());
+            });
+
+        }.bind(this),
+        error: function(data) {
+          if(!this.failed) {
+            this.failed = new Date();
+          }
+        }.bind(this)
+
+      });
+
+    }
+  }
+});
+</script>
+<!--endRemoveIf(script)-->
+<div class="module subways ">
+
+  <fail-pill :failed="this.failed"/>
+</div>
