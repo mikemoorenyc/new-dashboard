@@ -36,13 +36,14 @@ var App = {
 
 </script>
 
-
+<link rel="stylesheet" type="text/css" href="<?php echo  get_bloginfo('template_url');?>/css/main.css?v=<?php echo time();?>">
 </head>
 <body>
 <div id="todolist"></div>
 <div id="news"></div>
 <div id="stocks"></div>
 <div id="weather"></div>
+
 <?php
 
 if(is_dir(get_template_directory().'/dashview/components/templates')) {

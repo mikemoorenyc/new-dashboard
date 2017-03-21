@@ -34,10 +34,14 @@ App.weather = new Vue({
       this.symbol = newValues.symbol;
       $.ajax({
         type: 'GET',
+        dataType: 'html',
         url:App.templateURL+'/assets/fonts/icon_weather_'+newValues.symbol+'.svg',
         success: function(data) {
-        this.symbolSVG = data;
-        }.bind(this)        
+
+        this.symbolSVG = data
+
+
+        }.bind(this)
       })
     },
     backgroundUpdate: function() {
@@ -48,9 +52,10 @@ App.weather = new Vue({
       $.ajax({
         type: 'GET',
 
-        url:App.apiKeys.weatherCurrent,
+        url:App.templateURL+'/test-conditions.php',
         success: function(data){
           success++;
+
           var partlyCloudies = ['partlysunny', 'mostlycloudy', 'partlycloudy', 'mostlysunny'];
           var current = data.current_observation;
           var icon = current.icon;
@@ -96,7 +101,7 @@ App.weather = new Vue({
       $.ajax({
         type: 'GET',
 
-        url:App.apiKeys.weatherForecast,
+        url:App.templateURL+'/test-forecast.php',
         success: function(data){
           success++;
            var forecast = data.forecast;
@@ -117,20 +122,15 @@ App.weather = new Vue({
 
       });
 
-    },
-    updateRelative: function(){
-      this.newsItems.forEach(function(e,i){
-        this.newsItems[i].relative = hoursAgo(e.date)
-      }.bind(this));
     }
   }
 });
 </script>
 <!--endRemoveIf(script)-->
-<div class="weather module">
-  
+<div class="module weather ">
+
   <div class="weather-icon" :class="this.symbol" v-html="this.symbolSVG">
-    
+
   </div>
   <div class="temp">{{this.temp}}&deg;</div>
   <div class="feels">{{this.feels}}&deg;</div>
