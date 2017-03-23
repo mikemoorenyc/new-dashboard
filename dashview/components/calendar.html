@@ -1,54 +1,65 @@
 <!--removeIf(script)-->
 <script type="text/javascript">
-App.stocks= new Vue({
-  template: '#template-stocks',
+App.calendar= new Vue({
+  template: '#template-calendar',
   data: {
-    stockItems: [],
-    failed: false
+    today:[],
+    tomorrow:[],
+    backgroundInterval: null
   },
   mounted: function() {
-    this.backgroundUpdate();
+    this.userLoop();
     this.backgroundInterval = setInterval(function(){
-      this.backgroundUpdate();
+      this.userLoop();
     }.bind(this),(1000*60)*10)
 
   },
   methods: {
-
-    backgroundUpdate: function() {
+    userLoop:function() {
+      App.allUsers.forEach(function(e,i){
+        if(e.calendarReady) {
+          this.backgroundUpdate(e);
+        }
+      }.bind(this))
+    },
+    backgroundUpdate: function(user) {
       $.ajax({
         type: 'GET',
 
-        url:App.templateURL+'/test-stocks.php',
+        url:App.homeURL+'/google-calendar/?id='+user.id,
         success: function(data){
-          var newStocks = [];
-          var numerator = 0;
-          var table = $(data).find('item description').html().replace('<![CDATA[','').replace(']]>','');
-          $('body').append('<div id="stock-parser" style="display:none;">'+table+'</div>');
-
-
-          $('#stock-parser').find('table').each(function(){
-            var item = {};
-            var trs = $(this).find('tr');
-            if(trs.length < 5) {
-              return;
-            }
-            item.title = $(trs[0]).text().trim();
-            item.last = parseFloat($(trs[1]).find('td').last().text()).toFixed(2);
-            item.change = parseFloat($(trs[2]).find('td').last().text().trim());
-            newStocks.push(item);
-
-
+          var items = data.items;
+          var newToday = this.today.filter(function(e){
+            return e.id !== user.id;
+          });
+          var newTomorrow = this.tomorrow.filter(function(e){
+            return e.id !== user.id;
           })
-
-          $('#stock-parser').remove();
-          this.stockItems = newStocks;
-
-        }.bind(this),
-        error: function(data) {
-          if(!this.failed) {
-            this.failed = new Date();
-          }
+          var today = new Date().getDate();
+          var tomorrow = new Date().getDate()+1;
+          items.forEach(function(e,i) {
+            var item = {
+             date: new Date(e.date),
+             title: e.title,
+             user: user
+            }
+            
+            if(item.date.getDate() === today) {
+              newToday.push(item);
+            }
+            if(item.date.getDate() === tomorrow) {
+             newTomorrow.push(item); 
+            }
+          }.bind(this));
+          function dateSort(a, b) {
+              a =a.date;
+              b = b.date;
+              return a>b ? -1 : a<b ? 1 : 0;
+          };
+          newToday.sort(dateSort);
+          newTomorrow.sort(dateSort);
+          this.today = newToday;
+          this.tomorrow = newTomorrow;
         }.bind(this)
 
       });
@@ -58,11 +69,6 @@ App.stocks= new Vue({
 });
 </script>
 <!--endRemoveIf(script)-->
-<div class="module stocks ">
-  <div class="stock" v-for="stock in stockItems">
-    {{stock.title}}
-    {{stock.change}}
-    {{stock.last}}
-  </div>
-  <fail-pill :failed="this.failed"/>
+<div class="module calendar">
+  
 </div>
