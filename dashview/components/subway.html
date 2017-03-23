@@ -38,9 +38,15 @@ App.subway= new Vue({
               var name = $(e).find('name').text();
               var status = $(e).find('status').text();
               if(name == 'L' || name == 'BDFM') {
-               if(name == 'BDFM') {
-                name = 'M'
-               }
+                if(name == 'BDFM') {
+                 name = 'M'
+                }
+                if(status !== 'GOOD SERVICE') {
+                 var text = $(e).find('text').text();
+                 if(!text.includes('['+name+']')) {
+                   status = 'GOOD SERVICE';
+                 }
+                }
                 newTrains.push({
                   name: name,
                   status: status
