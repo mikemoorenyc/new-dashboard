@@ -36,7 +36,8 @@ var App = {
   initialTodos : <?php echo json_encode(get_all_todos());?>,
   wpAjaxURL : "<?php echo admin_url( 'admin-ajax.php' );?>",
   templateURL: "<?php echo  get_bloginfo('template_url');?>",
-  allUsers: <?php echo json_encode($allUsers);?>
+  allUsers: <?php echo json_encode($allUsers);?>,
+  homeURL: "<?php echo esc_url( home_url( ) );?>"
 };
 
 
