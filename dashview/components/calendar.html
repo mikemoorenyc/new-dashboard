@@ -67,6 +67,42 @@ App.calendar= new Vue({
     }
   }
 });
+  
+App.clock= new Vue({
+  template: '#template-clock',
+  data: {
+    date: new Date()
+  },
+  mounted: function() {
+    this.backgroundInterval = setInterval(function(){
+      this.date = new Date();
+    }.bind(this),(1000*30))
+
+  },
+  computed: {
+   month: function() {
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Nov','Dec'];
+     return months[this.date.getMonth()];
+   },
+   day: function() {
+    var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat' ];
+     return days[this.date.getDay()];
+   },
+   time: function() {
+     var minutes = this.date.getMinutes();
+     if(minutes<10) {
+      minutes = '0'+minutes;
+     }
+     var ampm = 'am';
+     var hours = this.date.getHours();
+     return {
+      minutes: minutes,
+      hours: hours,
+      ampm: ampm
+     }
+   }
+  }
+});
 </script>
 <!--endRemoveIf(script)-->
 <div class="module calendar">
