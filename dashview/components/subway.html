@@ -5,11 +5,11 @@ App.subway= new Vue({
   data: {
     trains: [
       {
-        train: 'L',
+        name: 'L',
         status: 'GOOD SERVICE'
       },
       {
-        train: 'M',
+        name: 'M',
         status: 'GOOD SERVICE'
       }
     ],
@@ -32,6 +32,7 @@ App.subway= new Vue({
         success: function(data){
             this.failed = false;
             var newTrains = [];
+          
             var lines = $(data).find('subway line');
             $(lines).each(function(i,e){
               var name = $(e).find('name').text();
@@ -41,13 +42,13 @@ App.subway= new Vue({
                 name = 'M'
                }
                 newTrains.push({
-                  train: name,
+                  name: name,
                   status: status
                 });
-                
+
               }
             });
-            this.train = newTrains;
+            this.trains = newTrains;
 
         }.bind(this),
         error: function(data) {
@@ -65,7 +66,7 @@ App.subway= new Vue({
 <!--endRemoveIf(script)-->
 <div class="module subways ">
   <div class="line" v-for="train in trains">
-    <div class="icon" :class="{'line'+train.name: true , danger:train.status !== 'GOOD SERVICE'}">
+    <div class="icon" :class="['line-'+train.name, { danger:train.status !== 'GOOD SERVICE'}]">
       {{train.name}}
     </div>
     <div class="status" :class="{hidden: train.status === 'GOOD SERVICE'}">

@@ -6,6 +6,12 @@
 <?php
 
 
+$allUsers = array();
+
+foreach(get_users() as $u) {
+  array_push($allUsers, returnUser($u->ID));
+}
+
 $keys = explode("\n",get_option( 'api_keys', '' ));
 $keyArray = array();
 foreach($keys as $k) {
@@ -29,7 +35,8 @@ var App = {
   apiKeys : <?php echo json_encode($keyArray);?>,
   initialTodos : <?php echo json_encode(get_all_todos());?>,
   wpAjaxURL : "<?php echo admin_url( 'admin-ajax.php' );?>",
-  templateURL: "<?php echo  get_bloginfo('template_url');?>"
+  templateURL: "<?php echo  get_bloginfo('template_url');?>",
+  allUsers: <?php echo json_encode($allUsers);?>
 };
 
 

@@ -33,7 +33,8 @@ function save_user_color( $user_id ) {
 add_action( 'show_user_profile', 'connect_calendar' );
 add_action( 'edit_user_profile', 'connect_calendar' );
 function connect_calendar( $user ) {
-  $calApi = get_the_author_meta( '_calendarapi', $user->ID );
+
+  $calApi = get_the_author_meta( '_original_token', $user->ID );
   ?>
 
   <table class="form-table">
@@ -43,15 +44,15 @@ function connect_calendar( $user ) {
 	<?php
 	if(empty($calApi)) {
 	?>
-		<a class="button button-primary" href="#" target="_blank">Connect Now!</a>
+		<a class="button button-primary" href="<?php echo esc_url( home_url( ) );?>/google-calendar/" target="_blank">Connect Now!</a>
 	<?php
-		
+
 	} else {
 		?>
 		You're connected!
 		<?php
 	}
-	
+
 	?>
 	</td>
 </tr>

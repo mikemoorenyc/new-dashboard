@@ -1,0 +1,68 @@
+<!--removeIf(script)-->
+<script type="text/javascript">
+App.stocks= new Vue({
+  template: '#template-stocks',
+  data: {
+    stockItems: [],
+    failed: false
+  },
+  mounted: function() {
+    this.backgroundUpdate();
+    this.backgroundInterval = setInterval(function(){
+      this.backgroundUpdate();
+    }.bind(this),(1000*60)*10)
+
+  },
+  methods: {
+
+    backgroundUpdate: function() {
+      $.ajax({
+        type: 'GET',
+
+        url:App.templateURL+'/test-stocks.php',
+        success: function(data){
+          var newStocks = [];
+          var numerator = 0;
+          var table = $(data).find('item description').html().replace('<![CDATA[','').replace(']]>','');
+          $('body').append('<div id="stock-parser" style="display:none;">'+table+'</div>');
+
+
+          $('#stock-parser').find('table').each(function(){
+            var item = {};
+            var trs = $(this).find('tr');
+            if(trs.length < 5) {
+              return;
+            }
+            item.title = $(trs[0]).text().trim();
+            item.last = parseFloat($(trs[1]).find('td').last().text()).toFixed(2);
+            item.change = parseFloat($(trs[2]).find('td').last().text().trim());
+            newStocks.push(item);
+
+
+          })
+
+          $('#stock-parser').remove();
+          this.stockItems = newStocks;
+
+        }.bind(this),
+        error: function(data) {
+          if(!this.failed) {
+            this.failed = new Date();
+          }
+        }.bind(this)
+
+      });
+
+    }
+  }
+});
+</script>
+<!--endRemoveIf(script)-->
+<div class="module stocks ">
+  <div class="stock" v-for="stock in stockItems">
+    {{stock.title}}
+    {{stock.change}}
+    {{stock.last}}
+  </div>
+  <fail-pill :failed="this.failed"/>
+</div>

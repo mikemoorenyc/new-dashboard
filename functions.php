@@ -44,7 +44,16 @@ function content_cleaner($content) {
 }
 // add_filter('the_content', 'content_cleaner',20);
 
+function add_custom_query_var( $vars ){
+  $vars['1'] = "code";
+
+  return $vars;
+}
+add_filter( 'query_vars', 'add_custom_query_var' );
+
+
 include 'todo/backend.php';
 include 'todo/return-user.php';
 include 'option-api-key.php';
+include 'option-google-api-path.php';
 ?>
