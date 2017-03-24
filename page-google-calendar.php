@@ -48,6 +48,13 @@ if($client->isAccessTokenExpired() ) {
 	//echo'bad';
 	$refresh_token = json_decode($original_token)->refresh_token;
 	//var_dump($refresh_token);
+	if(empty($refresh_token)) {
+		$client->revokeToken(); 
+		update_usermeta( $user_id, '_original_token', '' );
+ 		update_usermeta( $user_id, '_access_token', '' );
+		wp_redirect( $current_url );
+  		die();
+	}
 	$client->refreshToken($refresh_token);
 	$newtoken=$client->getAccessToken();
 	update_usermeta( $user_id, '_access_token', $newtoken);
