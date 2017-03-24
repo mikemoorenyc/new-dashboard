@@ -4,13 +4,29 @@ function AppInit() {
   $(components).each(function(i,e){
     App[e].$mount('#'+e)
   });
-  markCenter();
+  makeCenter();
+  
+  $(window).resize(function(){
+    makeCenter();
+  });
 
-function makeCenter() {
-  var ww = $(window).width();
-  var wh = $(window).height();
-  var iw = 16;
-  var ih = 9;
-}
+  function makeCenter() {
+    var bh = $(window).height(),
+        bw = $(window).width(),
+        ih = 800,
+        iw = 1280;
+    var scale_h = bh / ih;
+    var scale_w = bw / iw;
+    var scale;
+    if(scale_h<scale_w) {
+      scale = scale_h
+    } else {
+    scale = scale_w;
+    }
+    $('#main-view').width(scale*iw).height(scale*ih);
+    $(body).css({
+      'font-size': (1*($('#main-view').width() / 1280))+'px'
+    })
+  }
 
 }
