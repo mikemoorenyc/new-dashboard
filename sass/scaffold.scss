@@ -49,10 +49,7 @@ textarea {
 textarea {
   resize: none;
 }
-svg {
-  display:block;
-  fill: white;
-}
+
 // Links
 a {
   text-decoration: none;
@@ -83,6 +80,7 @@ img {
 svg {
   display: block;
   max-width:100%;
+     fill: currentColor;
 }
 
 //TYPE
