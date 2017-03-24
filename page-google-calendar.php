@@ -102,15 +102,18 @@ $dateArray = array();
 
 foreach($items as $item) {
 	//var_dump($item);
+	$allDay = false;
 	if($item->start->dateTime == NULL) {
 		$date = $item->start->date.'T00:01:00-05:00';
+		$allDay = true;
 	} else {
 		$date = $item->start->dateTime;
 	}
 	array_push($dateArray,
 		array(
 		'title' => $item->summary,
-		'date' => $date
+		'date' => $date,
+		'allDay'=>$allDay
 		)
 	);
 }
