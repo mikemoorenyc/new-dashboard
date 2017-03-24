@@ -35,6 +35,7 @@ add_action( 'edit_user_profile', 'connect_calendar' );
 function connect_calendar( $user ) {
 
   $calApi = get_the_author_meta( '_original_token', $user->ID );
+  $access = get_the_author_meta( '_access_token', $user->ID );
   ?>
 
   <table class="form-table">

@@ -2,8 +2,7 @@
 /**
  * Template Name: Google calendar
  */
-?>
-<?php
+header('Content-Type: application/json');
 session_start();
 
 $google_api_path = get_option( 'google_api_path', '' );
@@ -12,8 +11,10 @@ $user_id = wp_get_current_user()->ID;
 if(!empty($_GET['id'])) {
   $user_id = $_GET['id'];
 }
+
 $original_token = get_the_author_meta( '_original_token', $user_id );
 $access_token = get_the_author_meta( '_access_token', $user_id );
+
 
 if(!empty($_GET['id'])) {
   $user_id = $_GET['id'];
@@ -35,6 +36,7 @@ if(empty($original_token) && ! isset($_GET['code'])) {
 if(empty($original_token) &&  isset($_GET['code'])) {
   $client->authenticate($_GET['code']);
   $first_token =  $client->getAccessToken();
+  var_dump($first_token);
   update_usermeta( $user_id, '_original_token', $first_token );
   update_usermeta( $user_id, '_access_token', $first_token );
   wp_redirect( $current_url );
@@ -52,6 +54,8 @@ if($client->isAccessTokenExpired() ) {
 	$client->setAccessToken($newtoken);
 
 }
+
+
 /*
 if($client->isAccessTokenExpired() ) {
 	//echo'bad';
@@ -105,7 +109,9 @@ foreach($items as $item) {
 }
 
 
-echo json_encode($dateArray);
+echo json_encode(array(
+  'items' =>$dateArray
+));
 
 die();
 

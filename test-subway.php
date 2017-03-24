@@ -51,7 +51,7 @@
                     &lt;span class="DateStyle"&gt;
                     &amp;nbsp;Posted:&amp;nbsp;03/20/2017&amp;nbsp;10:09PM
                     &lt;/span&gt;&lt;br/&gt;&lt;br/&gt;
-                  &lt;P&gt;Due to ongoing track maintenance at &lt;STRONG&gt;149 St-Grand Concourse&lt;/STRONG&gt;, northbound [2] and [5] trains are running with delays. &lt;/P&gt;
+                  &lt;P&gt;Due to ongoing track maintenance at &lt;STRONG&gt;149 St-Grand Concourse&lt;/STRONG&gt;, northbound [M] and [5] trains are running with delays. &lt;/P&gt;
 &lt;P&gt;Allow additional travel time.&lt;/P&gt;
                 &lt;br/&gt;&lt;br/&gt;
               </text>

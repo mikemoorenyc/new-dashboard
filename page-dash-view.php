@@ -29,7 +29,32 @@ foreach($keys as $k) {
  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
 <title><?php echo get_the_title();?></title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="<?php echo  get_bloginfo('template_url');?>/manifest.php">
+<?php
+$icons = array(180,120,167,152);
+$icon_id = get_option( 'ios_icon', '' );
+if(!empty($icon_id)) {
+  foreach($icons as $i) {
+    $img = wp_get_attachment_image_src( $icon_id, 'icon_'.$i );
+    if(!empty($img)) {
+      if($looper === 0) {
+        ?>
+        <link rel="apple-touch-icon" href="<?php echo $img[0];?>">
+        <?php
+      }
+      ?>
+      <link rel="apple-touch-icon" sizes="<?php echo $i;?>x<?php echo $i;?>" href="<?php echo $img[0];?>">
+      <link rel="icon" type="image/png" sizes="<?php echo $i;?>x<?php echo $i;?>" href="<?php echo $img[0];?>" />
+      <?php
 
+      $looper++;
+    }
+
+  }
+}
+ ?>
 <script>
 var App = {
   apiKeys : <?php echo json_encode($keyArray);?>,
@@ -47,11 +72,13 @@ var App = {
 <link rel="stylesheet" type="text/css" href="<?php echo  get_bloginfo('template_url');?>/css/main.css?v=<?php echo time();?>">
 </head>
 <body>
+  <div id="calendar"></div>
 <div id="todolist"></div>
 <div id="news"></div>
 <div id="stocks"></div>
 <div id="weather"></div>
 <div id="subway"></div>
+<div id="clock"></div>
 <?php
 
 if(is_dir(get_template_directory().'/dashview/components/templates')) {
@@ -84,5 +111,8 @@ $(document).ready(function(){
 });
 
 </script>
+<div id="placeholder">
+  <div class="inner"></div>
+</div>
 </body>
 </html>

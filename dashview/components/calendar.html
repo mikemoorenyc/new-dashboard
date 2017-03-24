@@ -28,6 +28,7 @@ App.calendar= new Vue({
 
         url:App.homeURL+'/google-calendar/?id='+user.id,
         success: function(data){
+
           var items = data.items;
           var newToday = this.today.filter(function(e){
             return e.id !== user.id;
@@ -41,14 +42,15 @@ App.calendar= new Vue({
             var item = {
              date: new Date(e.date),
              title: e.title,
-             user: user
+             user: user,
+             formatted: hoursFormatter(new Date(e.date))
             }
-            
+
             if(item.date.getDate() === today) {
               newToday.push(item);
             }
             if(item.date.getDate() === tomorrow) {
-             newTomorrow.push(item); 
+             newTomorrow.push(item);
             }
           }.bind(this));
           function dateSort(a, b) {
@@ -67,44 +69,21 @@ App.calendar= new Vue({
     }
   }
 });
-  
-App.clock= new Vue({
-  template: '#template-clock',
-  data: {
-    date: new Date()
-  },
-  mounted: function() {
-    this.backgroundInterval = setInterval(function(){
-      this.date = new Date();
-    }.bind(this),(1000*30))
 
-  },
-  computed: {
-   month: function() {
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Nov','Dec'];
-     return months[this.date.getMonth()];
-   },
-   day: function() {
-    var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat' ];
-     return days[this.date.getDay()];
-   },
-   time: function() {
-     var minutes = this.date.getMinutes();
-     if(minutes<10) {
-      minutes = '0'+minutes;
-     }
-     var ampm = 'am';
-     var hours = this.date.getHours();
-     return {
-      minutes: minutes,
-      hours: hours,
-      ampm: ampm
-     }
-   }
-  }
-});
+
 </script>
 <!--endRemoveIf(script)-->
 <div class="module calendar">
-  
+  <div class="today">
+    <div v-for="item in today" class="item">
+      {{item.title}}
+      {{item.formatted.hours}}:{{item.formatted.minutes}} {{item.formatted.ampm}}
+    </div>
+  </div>
+  <div class="tomorrow">
+    <div v-for="item in tomorrow" class="item">
+    Tomorrow:  {{item.title}}
+    {{item.formatted.hours}}:{{item.formatted.minutes}} {{item.formatted.ampm}}
+    </div>
+  </div>
 </div>

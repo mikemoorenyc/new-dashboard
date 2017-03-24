@@ -13,7 +13,7 @@ App.subway= new Vue({
         status: 'GOOD SERVICE'
       }
     ],
-    failed: false
+    failed: false  
   },
   mounted: function() {
     this.backgroundUpdate();
@@ -32,7 +32,7 @@ App.subway= new Vue({
         success: function(data){
             this.failed = false;
             var newTrains = [];
-          
+
             var lines = $(data).find('subway line');
             $(lines).each(function(i,e){
               var name = $(e).find('name').text();

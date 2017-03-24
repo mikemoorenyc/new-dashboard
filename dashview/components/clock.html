@@ -1,0 +1,36 @@
+<!--removeIf(script)-->
+<script type="text/javascript">
+App.clock= new Vue({
+  template: '#template-clock',
+  data: {
+    date: new Date()
+  },
+  mounted: function() {
+    this.backgroundInterval = setInterval(function(){
+      this.date = new Date();
+    }.bind(this),(1000*30))
+
+  },
+  computed: {
+   month: function() {
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Nov','Dec'];
+     return months[this.date.getMonth()];
+   },
+   day: function() {
+    var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat' ];
+     return days[this.date.getDay()];
+   },
+   time: function() {
+     var format = hoursFormatter(this.date);
+     return format.hours+':'+format.minutes+' '+format.ampm;
+   }
+  }
+});
+</script>
+<!--endRemoveIf(script)-->
+<div class="clock module">
+  <div class="date">
+    {{day}} {{date.getDate()}} {{month}}
+  </div>
+  <div class="time">{{time}}</div>
+</div>
