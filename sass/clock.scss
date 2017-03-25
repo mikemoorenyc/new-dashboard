@@ -1,0 +1,14 @@
+.module.clock {
+  line-height: 1;
+  text-transform: uppercase;
+  .time {
+    font-weight: 300;
+    font-size:95rem;
+  }
+  .date {
+    font-weight: bold;
+    font-size:30rem;
+    text-indent: 10rem;
+    margin-bottom:5rem;
+  }
+}

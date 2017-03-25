@@ -27,7 +27,7 @@ foreach($keys as $k) {
  <meta charset="UTF-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
 <title><?php echo get_the_title();?></title>
 <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -72,13 +72,28 @@ var App = {
 <link rel="stylesheet" type="text/css" href="<?php echo  get_bloginfo('template_url');?>/css/main.css?v=<?php echo time();?>">
 </head>
 <body>
-  <div id="calendar"></div>
-<div id="todolist"></div>
-<div id="news"></div>
-<div id="stocks"></div>
-<div id="weather"></div>
-<div id="subway"></div>
-<div id="clock"></div>
+<div id="main-view" class="clearfix">
+  <div class="col">
+    <div id="subway"></div>
+    <div id="news"></div>
+    <div id="clock"></div>
+  </div>
+  <div class="col">
+    <div id="weather"></div>
+    <div id="stocks"></div>
+  </div>
+  <div class="col">
+    <div id="calendar"></div>
+    <div id="todolist"></div>
+  </div>
+
+
+
+
+
+
+
+
 <?php
 
 if(is_dir(get_template_directory().'/dashview/components/templates')) {
@@ -111,8 +126,6 @@ $(document).ready(function(){
 });
 
 </script>
-<div id="placeholder">
-  <div class="inner"></div>
 </div>
 </body>
 </html>

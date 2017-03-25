@@ -5,12 +5,13 @@ function AppInit() {
     App[e].$mount('#'+e)
   });
   makeCenter();
-  
+
   $(window).resize(function(){
     makeCenter();
   });
 
   function makeCenter() {
+
     var bh = $(window).height(),
         bw = $(window).width(),
         ih = 800,
@@ -24,7 +25,7 @@ function AppInit() {
     scale = scale_w;
     }
     $('#main-view').width(scale*iw).height(scale*ih);
-    $(body).css({
+    $('html').css({
       'font-size': (1*($('#main-view').width() / 1280))+'px'
     })
   }

@@ -13,10 +13,9 @@ html {
 }
 body {
   font-family: Roboto, sans-serif;
-  font-size:$font-size-base;
   line-height: $line-height-base;
   color: white;
-  background-color: black;
+  background-color: lighten(black,5%);
   font-weight: normal;
   -webkit-font-smoothing: antialiased!important;
   -webkit-text-size-adjust: none;
@@ -24,17 +23,37 @@ body {
   width:100%;
   height:100%;
   overflow: hidden;
+  font-size: 16rem;
 }
-#placeholder {
-  background:red;
-  width:200px;
 
+#main-view {
+  background:black;
+  width:200px;
+  overflow:hidden;
   height: 200px;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
+  .col {
+    $gutter-width: 40rem;
+    float: left;
+    width: calc((100% - (#{$gutter-width} * 2)) / 3);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    &:nth-child(2) {
+      margin: 0 $gutter-width;
+    }
+    .module {
+      position: relative;
+      overflow:hidden;
+      &.shrink {
+        flex:auto;
+      }
+    }
 
+  }
 }
 
 // Reset fonts for relevant elements

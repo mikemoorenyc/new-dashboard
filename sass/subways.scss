@@ -1,0 +1,49 @@
+.module.subways {
+  .line {
+    width: 170rem;
+
+    float: left;
+    &:first-child {
+      margin-right: 35rem;
+    }
+    .icon {
+      height: 170rem;
+      border: 16rem solid white;
+      border-radius:50%;
+      width: 100%;
+      position: relative;
+      &.danger {
+        &:after {
+          display: block;
+          content:'';
+          height: 16rem;
+          width:150rem;
+          position: absolute;
+          left: 50%;
+          top:50%;
+          transform: translate(-50%,-50%) rotate(45deg);
+          background: white;
+        }
+      }
+      .letter {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        line-height: 1em;
+        font-size: 110rem;
+        font-weight: 900;
+        &.line-m {
+          color: #ffb999;
+        }
+      }
+    }
+    .status {
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-top: 15rem;
+      font-size:19rem;
+    }
+  }
+}

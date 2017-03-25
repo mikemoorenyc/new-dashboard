@@ -13,7 +13,7 @@ App.subway= new Vue({
         status: 'GOOD SERVICE'
       }
     ],
-    failed: false  
+    failed: false
   },
   mounted: function() {
     this.backgroundUpdate();
@@ -70,12 +70,12 @@ App.subway= new Vue({
 });
 </script>
 <!--endRemoveIf(script)-->
-<div class="module subways ">
+<div class="module subways clearfix">
   <div class="line" v-for="train in trains">
     <div class="icon" :class="['line-'+train.name, { danger:train.status !== 'GOOD SERVICE'}]">
-      {{train.name}}
+      <div class="letter" :class="'line-'+train.name.toLowerCase()">{{train.name}}</div>
     </div>
-    <div class="status" :class="{hidden: train.status === 'GOOD SERVICE'}">
+    <div class="status" :class="{invisible: train.status === 'GOOD SERVICE'}">
       {{train.status}}
     </div>
   </div>

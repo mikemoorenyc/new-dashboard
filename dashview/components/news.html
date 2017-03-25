@@ -6,7 +6,9 @@ App.news = new Vue({
     newsItems: [],
     failed: false,
     backgroundInterval: null,
-    relativeInterval: null
+    relativeInterval: null,
+    switchInterval: null,
+    current: 0
   },
   mounted: function() {
     this.backgroundUpdate();
@@ -16,6 +18,13 @@ App.news = new Vue({
     this.relativeInterval = setInterval(function(){
       this.updateRelative();
     }.bind(this), (1000*30))
+    this.switchInterval = setInterval(function(){
+      if(this.current == this.newsItems.length-1) {
+        this.current = 0;
+      } else {
+        this.current++;
+      }
+    }.bind(this),(1000*7))
   },
   methods: {
     backgroundUpdate: function() {
@@ -60,13 +69,11 @@ App.news = new Vue({
 });
 </script>
 <!--endRemoveIf(script)-->
-<div class="news module">
-  <div v-for="item in newsItems">
-    {{item.title}}<br/>
+<div class="news module shrink">
+  <div v-for="(item,key) in newsItems" class="item" :class="{active: key == current}">
 
-      {{item.relative}}
-
-
+    <div class="title">{{item.title}}</div>
+    <div class="time">{{item.relative}}</div>
   </div>
   <fail-pill :failed="this.failed"/>
 </div>

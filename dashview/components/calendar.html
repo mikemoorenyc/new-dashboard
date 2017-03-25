@@ -43,7 +43,8 @@ App.calendar= new Vue({
              date: new Date(e.date),
              title: e.title,
              user: user,
-             formatted: hoursFormatter(new Date(e.date))
+             formatted: hoursFormatter(new Date(e.date)),
+             allDay: e.allDay
             }
 
             if(item.date.getDate() === today) {
