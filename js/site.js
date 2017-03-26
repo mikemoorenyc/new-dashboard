@@ -1,5 +1,10 @@
 function AppInit() {
 
+  $('#refresher').click(function(){
+    location.reload();
+    return false;
+  });
+
   var components = ['todolist','news','weather','stocks','subway','clock','calendar'];
   $(components).each(function(i,e){
     App[e].$mount('#'+e)

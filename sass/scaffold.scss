@@ -25,6 +25,15 @@ body {
   overflow: hidden;
   font-size: 16rem;
 }
+#refresher {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width:50%;
+  height: 50%;
+  background: red;
+  opacity:0;
+}
 
 #main-view {
   background:black;

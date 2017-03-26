@@ -21,12 +21,12 @@ App.stocks= new Vue({
         dataType:"xml",
         url:App.templateURL+'/webproxy.php?id=stocks',
         success: function(data){
-          console.log(data);
+          
           var newStocks = [];
           var numerator = 0;
 
           var table = $(data).find('item description').text().replace('<![CDATA[','').replace(']]>','');
-          console.log(table);
+
           $('body').append('<div id="stock-parser" style="display:none;">'+table+'</div>');
 
 

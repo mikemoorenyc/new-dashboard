@@ -130,6 +130,8 @@ $(document).ready(function(){
 });
 
 </script>
+
+<div id="refresher"></div>
 </div>
 </body>
 </html>
