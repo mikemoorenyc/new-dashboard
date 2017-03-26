@@ -10,9 +10,13 @@ function AppInit() {
     makeCenter();
   });
 
+  setTimeout(function(){
+    location.reload();
+  },(1000*60)*60);
+
   function makeCenter() {
 
-    var bh = $(window).height(),
+    var bh = $(window).height() - 20,
         bw = $(window).width(),
         ih = 800,
         iw = 1280;

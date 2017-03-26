@@ -11,11 +11,14 @@ $allUsers = array();
 foreach(get_users() as $u) {
   array_push($allUsers, returnUser($u->ID));
 }
-
+$stocks = '';
 $keys = explode("\n",get_option( 'api_keys', '' ));
 $keyArray = array();
 foreach($keys as $k) {
   $ex = explode(',',$k);
+  if(trim($ex[0]) == 'stocks') {
+    $stocks =trim($ex[1]) ;
+  }
   $keyArray[trim($ex[0]) ] = trim($ex[1]);
 }
 //echo json_encode($keyArray);
@@ -64,7 +67,7 @@ var App = {
   allUsers: <?php echo json_encode($allUsers);?>,
   homeURL: "<?php echo esc_url( home_url( ) );?>"
 };
-
+App.apiKeys.stocks = '<?php echo htmlspecialchars_decode($stocks);?>';
 
 
 </script>
@@ -83,6 +86,7 @@ var App = {
     <div id="stocks"></div>
   </div>
   <div class="col">
+
     <div id="calendar"></div>
     <div id="todolist"></div>
   </div>

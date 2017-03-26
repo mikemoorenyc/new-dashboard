@@ -84,7 +84,7 @@
 		"precip_today_string":"0.00 in (0 mm)",
 		"precip_today_in":"0.00",
 		"precip_today_metric":"0",
-		"icon":"clear",
+		"icon":"tstorms", 
 		"icon_url":"http://icons.wxug.com/i/c/k/nt_clear.gif",
 		"forecast_url":"http://www.wunderground.com/US/NY/Brooklyn.html",
 		"history_url":"http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=KNYNEWYO94",

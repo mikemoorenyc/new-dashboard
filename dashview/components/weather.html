@@ -51,13 +51,14 @@ App.weather = new Vue({
 
       $.ajax({
         type: 'GET',
-
-        url:App.templateURL+'/test-conditions.php',
+        dataType:'json',
+        url:App.templateURL+'/webproxy.php?id='+App.apiKeys.weatherConditions,
         success: function(data){
           success++;
 
           var partlyCloudies = ['partlysunny', 'mostlycloudy', 'partlycloudy', 'mostlysunny'];
           var current = data.current_observation;
+
           var icon = current.icon;
           //REMOVE NIGHT
           icon = icon.replace('nt_', '');
@@ -70,9 +71,7 @@ App.weather = new Vue({
           if (icon == 'clear') {
             icon = 'sunny';
           }
-          if (icon == 'flurries') {
-            icon = 'snow';
-          }
+
 
           //BRING BACK THE NIGHT
           if (current.icon == 'nt_clear' || current.icon == 'nt_sunny') {
@@ -100,8 +99,8 @@ App.weather = new Vue({
       });
       $.ajax({
         type: 'GET',
-
-        url:App.templateURL+'/test-forecast.php',
+        dataType:'json',
+        url:App.templateURL+'/webproxy.php?id='+App.apiKeys.weatherForecast,
         success: function(data){
           success++;
            var forecast = data.forecast;
@@ -128,17 +127,31 @@ App.weather = new Vue({
 </script>
 <!--endRemoveIf(script)-->
 <div class="module weather ">
-
-  <div class="weather-icon" :class="this.symbol" v-html="this.symbolSVG">
-
+  <div class="top clearfix">
+    <div class="current">
+      <div class="temp">{{this.temp}}&deg;</div>
+      <div class="feels">Feels {{this.feels}}&deg;</div>
+    </div>
+    <div class="weather-icon" :class="this.symbol" v-html="this.symbolSVG" />
   </div>
-  <div class="temp">{{this.temp}}&deg;</div>
-  <div class="feels">{{this.feels}}&deg;</div>
+
+
+
   <div class="forecast">{{this.forecast}}</div>
-  <div class="precip">{{this.precip}}%</div>
-  <div class="hilo">
-    <span class="hi">{{this.hi}}&deg;</span> / <span class="lo">{{this.lo}}&deg;</span>
+  <div class="bottom">
+    <div class="precip">
+      <div class="icon">
+        <?php echo file_get_contents(get_template_directory().'/assets/fonts/icon_weather_umbrella.svg');?>
+      </div>
+      <div class="text">{{this.precip}}%</div>
+    </div>
+
+    <div class="hilo">
+      <span class="hi">{{this.hi}}&deg;</span> / <span class="lo">{{this.lo}}&deg;</span>
+    </div>
   </div>
+
+
 
   <fail-pill :failed="this.failed"/>
 </div>

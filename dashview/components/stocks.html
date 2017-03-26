@@ -18,12 +18,15 @@ App.stocks= new Vue({
     backgroundUpdate: function() {
       $.ajax({
         type: 'GET',
-
-        url:App.templateURL+'/test-stocks.php',
+        dataType:"xml",
+        url:App.templateURL+'/webproxy.php?id=stocks',
         success: function(data){
+          console.log(data);
           var newStocks = [];
           var numerator = 0;
-          var table = $(data).find('item description').html().replace('<![CDATA[','').replace(']]>','');
+
+          var table = $(data).find('item description').text().replace('<![CDATA[','').replace(']]>','');
+          console.log(table);
           $('body').append('<div id="stock-parser" style="display:none;">'+table+'</div>');
 
 
@@ -58,11 +61,22 @@ App.stocks= new Vue({
 });
 </script>
 <!--endRemoveIf(script)-->
-<div class="module stocks ">
+<div class="module stocks clearfix">
   <div class="stock" v-for="stock in stockItems">
-    {{stock.title}}
-    {{stock.change}}
-    {{stock.last}}
+    <div class="title">
+      {{stock.title}}
+    </div>
+    <div class="last">
+      ${{stock.last}}
+    </div>
+    <div class="change">
+      <div class="arrow" :class="{rotate: stock.change < 0}">
+        <?php echo file_get_contents(get_template_directory().'/assets/fonts/icon_arrow_up.svg');?>
+      </div>
+      {{stock.change}}
+    </div>
+
+
   </div>
   <fail-pill :failed="this.failed"/>
 </div>

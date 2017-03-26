@@ -15,7 +15,7 @@ Vue.component('main-list', {
     setInterval(function(){
 
       this.backgroundUpdate();
-    }.bind(this),(15*1000))
+    }.bind(this),(35*1000))
   },
   methods: {
     backgroundUpdate:function() {

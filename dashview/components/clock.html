@@ -22,7 +22,7 @@ App.clock= new Vue({
    },
    time: function() {
      var format = hoursFormatter(this.date);
-     return format.hours+':'+format.minutes+' '+format.ampm;
+     return format.hours+':'+format.minutes+''+format.ampm;
    }
   }
 });

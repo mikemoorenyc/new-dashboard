@@ -1,0 +1,40 @@
+.module.stocks {
+  padding-top:40rem;
+  .stock {
+    text-align:center;
+    border: 1px solid white;
+    border-radius: 3px;
+    float: left;
+    width:calc((100% - 30rem) / 3);
+    padding-bottom:10rem;
+    &:nth-child(2) {
+      margin: 0 15rem;
+    }
+    .title {
+      border-bottom:1px solid white;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 2rem 5rem;
+      font-size:20rem;
+    }
+    .last {
+      font-size: 30rem;
+      font-weight: lighter;
+      padding: 10rem 0 0 ;
+    }
+    .change {
+      line-height:30rem;
+      .arrow {
+        display: inline-block;
+        vertical-align: middle;
+        &.rotate {
+          transform:rotate(180deg);
+        }
+        svg {
+          width: 30rem;
+          height: 30rem;
+        }
+      }
+    }
+  }
+}

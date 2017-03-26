@@ -15,7 +15,7 @@ body {
   font-family: Roboto, sans-serif;
   line-height: $line-height-base;
   color: white;
-  background-color: lighten(black,5%);
+
   font-weight: normal;
   -webkit-font-smoothing: antialiased!important;
   -webkit-text-size-adjust: none;
@@ -44,6 +44,20 @@ body {
     flex-direction: column;
     &:nth-child(2) {
       margin: 0 $gutter-width;
+    }
+    &:nth-child(2),&:nth-child(3) {
+      display:block;
+      position: relative;
+      &:after {
+        display: block;
+        content:'';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width:100%;
+        height: 50rem;
+        background:linear-gradient(to top, rgba(black,1) 0%, rgba(black,0) 100%);
+      }
     }
     .module {
       position: relative;
@@ -100,6 +114,9 @@ svg {
   display: block;
   max-width:100%;
      fill: currentColor;
+    * {
+      fill: currentColor !important;
+    }
 }
 
 //TYPE

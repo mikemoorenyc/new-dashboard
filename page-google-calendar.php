@@ -49,7 +49,7 @@ if($client->isAccessTokenExpired() ) {
 	$refresh_token = json_decode($original_token)->refresh_token;
 	//var_dump($refresh_token);
 	if(empty($refresh_token)) {
-		$client->revokeToken(); 
+		$client->revokeToken();
 		update_usermeta( $user_id, '_original_token', '' );
  		update_usermeta( $user_id, '_access_token', '' );
 		wp_redirect( $current_url );
@@ -113,7 +113,8 @@ foreach($items as $item) {
 		array(
 		'title' => $item->summary,
 		'date' => $date,
-		'allDay'=>$allDay
+		'allDay'=>$allDay,
+    'user' => returnUser($user_id)
 		)
 	);
 }

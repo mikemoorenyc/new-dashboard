@@ -1,0 +1,24 @@
+.module.todolist {
+  padding-top: 35rem;
+  .item {
+    padding-bottom: 10rem;
+    position: relative;
+    font-size: 20rem;
+    padding-left: 30rem;
+    .box {
+      position: absolute;
+      left: 0;
+      top: 5rem;
+      width:20rem;
+      height: 20rem;
+      border:1px solid white;
+      border-radius: 50%;
+      &.checked {
+        border:0;
+      }
+    }
+    &.checked {
+      text-decoration: line-through;
+    }
+  }
+}

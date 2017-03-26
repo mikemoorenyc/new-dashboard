@@ -7,31 +7,43 @@ App.news = new Vue({
     failed: false,
     backgroundInterval: null,
     relativeInterval: null,
-    switchInterval: null,
-    current: 0
+    ih: 0,
+    scrollPos: 0,
+    mover: null
+  },
+  updated: function() {
+    this.ih = $(App.news.$el).find('.container .scroller').height() / 2
+
   },
   mounted: function() {
+
+    this.mover= requestAnimationFrame(this.move);
+    $(window).resize(function(){
+      this.ih = $(App.news.$el).find('.container .scroller').height() / 2
+    }.bind(this))
     this.backgroundUpdate();
     this.backgroundInterval = setInterval(function(){
       this.backgroundUpdate();
-    }.bind(this),(1000*60)*5)
+    }.bind(this),(1000*60)*20)
     this.relativeInterval = setInterval(function(){
       this.updateRelative();
     }.bind(this), (1000*30))
-    this.switchInterval = setInterval(function(){
-      if(this.current == this.newsItems.length-1) {
-        this.current = 0;
-      } else {
-        this.current++;
-      }
-    }.bind(this),(1000*7))
+
   },
   methods: {
+    move: function() {
+      this.scrollPos += .25;
+
+      if(this.scrollPos >= this.ih) {
+        this.scrollPos = 0;
+      }
+      this.mover= requestAnimationFrame(this.move);
+    },
     backgroundUpdate: function() {
       $.ajax({
         type: 'GET',
 
-        url:App.templateURL+'/test-news.php',
+        url:App.templateURL+'/webproxy.php?id='+App.apiKeys.news,
         success: function(data){
           this.failed = false;
           var newNews = [];
@@ -70,10 +82,24 @@ App.news = new Vue({
 </script>
 <!--endRemoveIf(script)-->
 <div class="news module shrink">
-  <div v-for="(item,key) in newsItems" class="item" :class="{active: key == current}">
+  <div class="container">
+    <div class="scroller" :style="{transform: 'translateY(-'+scrollPos+'px)'}">
+      <div class="itemBlock">
+        <div v-for="(item,key) in newsItems" class="item" >
 
-    <div class="title">{{item.title}}</div>
-    <div class="time">{{item.relative}}</div>
+          <div class="title">{{item.title}}</div>
+          <div class="date">{{item.relative}}</div>
+        </div>
+      </div>
+      <div class="itemBlock">
+        <div v-for="(item,key) in newsItems" class="item" >
+
+          <div class="title">{{item.title}}</div>
+          <div class="date">{{item.relative}}</div>
+        </div>
+      </div>
+
+    </div>
   </div>
   <fail-pill :failed="this.failed"/>
 </div>
