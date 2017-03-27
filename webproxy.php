@@ -1,5 +1,6 @@
 <?php
 require_once("../../../wp-load.php");
+header('Content-Type: application/json');
 if(empty($_GET['id'])) {
   die();
 }
