@@ -1,24 +1,17 @@
 <?php
 require_once("../../../wp-load.php");
-if(($_GET['id']) == 'stocks') {
-  $stocks = '';
-  $keys = explode("\n",get_option( 'api_keys', '' ));
-  $keyArray = array();
-  foreach($keys as $k) {
-    $ex = explode(',',$k);
-    if(trim($ex[0]) == 'stocks') {
-      $stocks =trim($ex[1]) ;
-    }
-    $keyArray[trim($ex[0]) ] = trim($ex[1]);
-  }
-  //var_dump($stocks);
-  //$test = file_get_contents($stocks)
-
-
-  echo file_get_contents(htmlspecialchars_decode($stocks));
-
+if(empty($_GET['id'])) {
   die();
 }
-echo file_get_contents(($_GET['id']));
+$api_id = $_GET['id']);
+$keys = explode("\n",get_option( 'api_keys', '' ));
+$keyArray = array();
+foreach($keys as $k) {
+  $ex = explode(',',$k);
+  $keyArray[trim($ex[0]) ] = trim($ex[1]);
+}
+echo file_get_contents(htmlspecialchars_decode($keyArray[$api_id]));
+die();
+
 
  ?>
