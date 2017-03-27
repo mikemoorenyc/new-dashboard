@@ -52,7 +52,7 @@ App.weather = new Vue({
       $.ajax({
         type: 'GET',
         dataType:'json',
-        url:App.templateURL+'/webproxy.php?id='+App.apiKeys.weatherConditions,
+        url:App.templateURL+'/webproxy.php?id=weatherConditions',
         success: function(data){
           success++;
 
@@ -100,7 +100,7 @@ App.weather = new Vue({
       $.ajax({
         type: 'GET',
         dataType:'json',
-        url:App.templateURL+'/webproxy.php?id='+App.apiKeys.weatherForecast,
+        url:App.templateURL+'/webproxy.php?id=weathForecast',
         success: function(data){
           success++;
            var forecast = data.forecast;
