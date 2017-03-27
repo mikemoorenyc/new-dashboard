@@ -21,6 +21,7 @@ foreach($keys as $k) {
   }
   $keyArray[trim($ex[0]) ] = trim($ex[1]);
 }
+$keyArray=array();
 //echo json_encode($keyArray);
 
  ?>
