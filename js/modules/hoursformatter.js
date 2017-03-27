@@ -11,11 +11,9 @@ function hoursFormatter(date) {
   if(hours === 0) {
     hours = 12;
   }
-  if(hours < 10) {
-    hours = '0'+hours
-  }
+
   if(hours > 12) {
-    hours = hours - 12;
+    hours -= 12;
   }
   return {
    minutes: minutes,
