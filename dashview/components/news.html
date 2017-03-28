@@ -9,17 +9,19 @@ App.news = new Vue({
     relativeInterval: null,
     ih: 0,
     scrollPos: 0,
-    mover: null
+    mover: null,
+    perSec: 0
   },
   updated: function() {
     this.ih = $(App.news.$el).find('.container .scroller').height() / 2
-
+    this.setSpeed();
   },
   mounted: function() {
 
-    this.mover= requestAnimationFrame(this.move);
+  //  this.mover= requestAnimationFrame(this.move);
     $(window).resize(function(){
-      this.ih = $(App.news.$el).find('.container .scroller').height() / 2
+      this.ih = $(App.news.$el).find('.container .scroller').height() / 2;
+      this.setSpeed();
     }.bind(this))
     this.backgroundUpdate();
     this.backgroundInterval = setInterval(function(){
@@ -31,6 +33,9 @@ App.news = new Vue({
 
   },
   methods: {
+    setSpeed: function(){
+       this.perSec = (this.ih * 2)/ 30;
+    },
     move: function() {
       this.scrollPos += .25;
 
@@ -83,10 +88,9 @@ App.news = new Vue({
 <!--endRemoveIf(script)-->
 <div class="news module shrink">
   <div class="container">
-    <div class="scroller" :style="{transform: 'translateY(-'+scrollPos+'px)'}">
+    <div class="scroller" :style="{animationDuration: this.perSec+'s'}">
       <div class="itemBlock">
         <div v-for="(item,key) in newsItems" class="item" >
-
           <div class="title">{{item.title}}</div>
           <div class="date">{{item.relative}}</div>
         </div>

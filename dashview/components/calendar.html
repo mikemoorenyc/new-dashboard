@@ -58,7 +58,7 @@ App.calendar= new Vue({
           function dateSort(a, b) {
               a =a.date;
               b = b.date;
-              return a>b ? -1 : a<b ? 1 : 0;
+              return a<b ? -1 : a>b ? 1 : 0;
           };
           newToday.sort(dateSort);
           newTomorrow.sort(dateSort);

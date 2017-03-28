@@ -1,10 +1,10 @@
 <?php
 require_once("../../../wp-load.php");
-header('Content-Type: application/json');
+
 if(empty($_GET['id'])) {
   die();
 }
-$api_id = $_GET['id']);
+$api_id = $_GET['id'];
 $keys = explode("\n",get_option( 'api_keys', '' ));
 $keyArray = array();
 foreach($keys as $k) {

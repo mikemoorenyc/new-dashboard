@@ -21,7 +21,7 @@ App.stocks= new Vue({
         dataType:"xml",
         url:App.templateURL+'/webproxy.php?id=stocks',
         success: function(data){
-          
+
           var newStocks = [];
           var numerator = 0;
 
@@ -69,11 +69,14 @@ App.stocks= new Vue({
     <div class="last">
       ${{stock.last}}
     </div>
-    <div class="change">
+    <div class="change" v-if="!isNaN(stock.change)">
       <div class="arrow" :class="{rotate: stock.change < 0}">
         <?php echo file_get_contents(get_template_directory().'/assets/fonts/icon_arrow_up.svg');?>
       </div>
       {{stock.change}}
+    </div>
+    <div class="change" v-if="isNaN(stock.change)">
+      &mdash;&mdash;
     </div>
 
 

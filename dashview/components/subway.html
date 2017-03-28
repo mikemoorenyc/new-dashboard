@@ -28,7 +28,7 @@ App.subway= new Vue({
       $.ajax({
         type: 'GET',
 
-        url:App.templateURL+'/webproxy.php?id='+App.apiKeys.subway,
+        url:App.templateURL+'/webproxy.php?id=subway',
         success: function(data){
             this.failed = false;
             var newTrains = [];

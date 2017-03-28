@@ -68,7 +68,6 @@ var App = {
   allUsers: <?php echo json_encode($allUsers);?>,
   homeURL: "<?php echo esc_url( home_url( ) );?>"
 };
-App.apiKeys.stocks = '<?php echo htmlspecialchars_decode($stocks);?>';
 
 
 </script>
