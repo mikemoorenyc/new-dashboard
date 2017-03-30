@@ -1,10 +1,1 @@
-Things to do
-=============
-TO-DO List
-------
-- Set up empty state
-- Service Workers
-
-Main Dashboard
-----
-- Everything
+This is a wordpress theme and there is literally zero documentation on how to use this. 
