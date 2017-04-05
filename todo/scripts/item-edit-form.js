@@ -4,7 +4,7 @@
 var itemEditFormTemplate = (`
   <div class="edit-item-form">
   <form @submit.prevent="sendUpdate(title)">
-    <input id="edit-title-input" type="text" v-model="title" :value="title" placeholder="I need to do...">
+    <input id="edit-title-input" @blur="sendUpdate(title)" type="text" v-model="title" :value="title" placeholder="I need to do...">
     <button style="display:none;" :disabled="title.length < 1"> Submit</button>
 
   </form>
