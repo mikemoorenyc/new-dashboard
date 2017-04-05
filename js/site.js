@@ -17,7 +17,7 @@ function AppInit() {
 
   setTimeout(function(){
     location.reload();
-  },(1000*60)*60);
+  },(1000*60)*120);
 
   function makeCenter() {
 
