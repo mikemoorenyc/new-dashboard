@@ -114,7 +114,7 @@ foreach($items as $item) {
 		'title' => $item->summary,
 		'date' => $date,
 		'allDay'=>$allDay,
-		'id' => $item->id
+		'id' => $item->id,
     'user' => returnUser($user_id)
 		)
 	);

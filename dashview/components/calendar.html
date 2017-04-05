@@ -30,7 +30,7 @@ App.calendar= new Vue({
         success: function(data){
 
           var items = data.items;
-
+    
           var newToday = this.today.filter(function(e){
             return e.user.id !== user.id;
           });

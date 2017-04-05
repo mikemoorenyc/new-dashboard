@@ -34,7 +34,10 @@ Vue.component('item-edit-form', {
   },
   methods: {
     sendUpdate:function(title) {
-
+      if(title.length === 0) {
+        App.bus.$emit('update-item',this.id,this.initialTitle);
+        return false;
+      }
       App.bus.$emit('update-item',this.id,title);
     }
   }
