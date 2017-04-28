@@ -88,11 +88,11 @@ App.stocks= new Vue({
     <div class="last">
       ${{stock.last | round}}
     </div>
-    <div class="change" v-if="!isNaN(stock.change)">
+    <div class="change" v-if="!isNaN(stock.change) && stock.change !== 0">
       <div class="arrow" :class="{rotate: stock.change < 0}">
         <?= file_get_contents(get_template_directory().'/assets/fonts/icon_arrow_up.svg');?>
       </div>
-      {{stock.change}}
+      {{stock.change | round}}
     </div>
     <div class="change" v-if="isNaN(stock.change) || stock.change === 0">
       &mdash;&mdash;
