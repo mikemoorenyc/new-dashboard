@@ -94,7 +94,7 @@ App.stocks= new Vue({
       </div>
       {{stock.change}}
     </div>
-    <div class="change" v-if="isNaN(stock.change)">
+    <div class="change" v-if="isNaN(stock.change) || stock.change === 0">
       &mdash;&mdash;
     </div>
 
