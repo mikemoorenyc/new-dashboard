@@ -16,7 +16,7 @@ App.stocks= new Vue({
   filters: {
     round: function (value) {
       if(value < 100 ) {
-       return value; 
+       return value;
       } else {
         return Math.round(value);
       }
@@ -30,18 +30,19 @@ App.stocks= new Vue({
        /* dataType:"xml",*/
         url:App.templateURL+'/webproxy.php?id=stocks',
         success: function(data){
-        
+
           var newStocks = [];
           var numerator = 0;
-          var stockItems = data.split("\r\n");
+          var stockItems = data.trim().split("\n");
+          console.log(data);
           stockItems.forEach(function(e,i){
             var stockArray = e.split(',');
             newStocks.push({
-              title: stockArray[0],
+              title: stockArray[0].replace(/['"]+/g, ''),
               last:parseFloat(stockArray[1]),
               change:parseFloat(stockArray[2])
             });
-            
+
           });
 /*
           var table = $(data).find('item description').text().replace('<![CDATA[','').replace(']]>','');
