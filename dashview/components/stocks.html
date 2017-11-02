@@ -28,43 +28,22 @@ App.stocks= new Vue({
       $.ajax({
         type: 'GET',
        /* dataType:"xml",*/
-        url:App.templateURL+'/webproxy.php?id=stocks',
+        url:App.templateURL+'/stockgetter.php',
         success: function(data){
 
           var newStocks = [];
           var numerator = 0;
-          var stockItems = data.trim().split("\n");
-          console.log(data);
+          
           stockItems.forEach(function(e,i){
-            var stockArray = e.split(',');
+            
             newStocks.push({
-              title: stockArray[0].replace(/['"]+/g, ''),
-              last:parseFloat(stockArray[1]),
-              change:parseFloat(stockArray[2])
+              title: e.title,
+              last:parseFloat(e.last),
+              change:parseFloat(e.change)
             });
 
           });
-/*
-          var table = $(data).find('item description').text().replace('<![CDATA[','').replace(']]>','');
-
-          $('body').append('<div id="stock-parser" style="display:none;">'+table+'</div>');
-
-
-          $('#stock-parser').find('table').each(function(){
-            var item = {};
-            var trs = $(this).find('tr');
-            if(trs.length < 5) {
-              return;
-            }
-            item.title = $(trs[0]).text().trim();
-            item.last = parseFloat($(trs[1]).find('td').last().text()).toFixed(2);
-            item.change = parseFloat($(trs[2]).find('td').last().text().trim());
-            newStocks.push(item);
-
-
-          })
-
-          $('#stock-parser').remove();*/
+          this.failed = false;
           this.stockItems = newStocks;
 
         }.bind(this),
