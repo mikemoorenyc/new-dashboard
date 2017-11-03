@@ -27,7 +27,7 @@ App.stocks= new Vue({
     backgroundUpdate: function() {
       $.ajax({
         type: 'GET',
-       /* dataType:"xml",*/
+        dataType:"json",
         url:App.templateURL+'/stockgetter.php',
         success: function(data){
 
