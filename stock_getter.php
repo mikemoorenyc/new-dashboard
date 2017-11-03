@@ -40,8 +40,8 @@ $close = floatval($daily["Time Series (Daily)"][$yesterday->format('Y-m-d')]["4.
  $current = floatval($intra["Time Series (1min)"][$intra["Meta Data"]["3. Last Refreshed"]]["4. close"]);
  $s_array[] = array(
   'title' => strtoupper($sym),
-  'last' => number_format($current,2),
-  'change' => number_format($current - $close,2)
+  'last' => round($current,2),
+  'change' => round($current - $close,2)
  
  );
  
