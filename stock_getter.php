@@ -6,6 +6,7 @@ if(empty($api) || empty($stocks)) {
  echo '[]';
  die();
 }
+date_default_timezone_set('America/Los_Angeles');
 
 
 $ch = curl_init();
@@ -22,25 +23,25 @@ foreach($stocks as $s) {
     continue;
  }
  $intra = json_decode($intra,true);
+
  curl_setopt($ch, CURLOPT_URL, 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='.$sym.'&apikey='.$api);
  $daily = curl_exec($ch);
  if($daily === false) {
     continue;
  }
  $daily = json_decode($daily,true);
- $close = floatval($daily["Time Series (Daily)"][1]['4. close'] );
- $current = $intra["Time Series (1min)"][0];
- $cVal = 9999;
- foreach($current as $k => $c) {
-  if($k === "5. volume"){continue;}
-  if( floatval($c) < $cVal) {
-   $cVal = floatval($c); 
-  }
- }
+
+$last_update = $daily['Meta Data']["3. Last Refreshed"];
+$yesterday = new DateTime($last_update);
+$yesterday->modify('-1 day');
+
+$close = floatval($daily["Time Series (Daily)"][$yesterday->format('Y-m-d')]["4. close"]);
+	
+ $current = floatval($intra["Time Series (1min)"][$intra["Meta Data"]["3. Last Refreshed"]]["4. close"]);
  $s_array[] = array(
   'title' => strtoupper($sym),
-  'last' => round($cVal, 2),
-  'change' => round($cVal - $close, 2)
+  'last' => number_format(round($current, 2),2),
+  'change' => number_format(round($current - $close, 2),2)
  
  );
  
