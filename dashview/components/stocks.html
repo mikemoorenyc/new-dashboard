@@ -16,7 +16,7 @@ App.stocks= new Vue({
   filters: {
     round: function (value) {
       if(value < 100 ) {
-       return value;
+       return value.toFixed(2);
       } else {
         return Math.round(value);
       }
