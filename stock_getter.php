@@ -15,6 +15,22 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 $s_array = [];
 
+function closeCheck($date,$daily) {
+ 
+ $yesterday = new DateTime($date);
+ 
+ for($i = 0; $i<10; $i++;) {
+	 $yesterday->modify('-1 day');
+	 
+	 if(!empty($daily["Time Series (Daily)"][$yesterday->format('Y-m-d')]["4. close"])) {
+		 return floatval($daily["Time Series (Daily)"][$yesterday->format('Y-m-d')]["4. close"]);
+	 }
+ }
+
+ 
+
+}
+
 foreach($stocks as $s) {
  $sym = trim($s);
  curl_setopt($ch, CURLOPT_URL, 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='.$sym.'&interval=1min&apikey='.$api);
@@ -30,12 +46,8 @@ foreach($stocks as $s) {
     continue;
  }
  $daily = json_decode($daily,true);
-
-$last_update = $daily['Meta Data']["3. Last Refreshed"];
-$yesterday = new DateTime($last_update);
-$yesterday->modify('-1 day');
-
-$close = floatval($daily["Time Series (Daily)"][$yesterday->format('Y-m-d')]["4. close"]);
+	$last_update = $daily['Meta Data']["3. Last Refreshed"];
+	$close = closeCheck($last_update,$daily);
 	
  $current = floatval($intra["Time Series (1min)"][$intra["Meta Data"]["3. Last Refreshed"]]["4. close"]);
  $s_array[] = array(
