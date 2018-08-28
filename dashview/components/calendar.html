@@ -151,9 +151,9 @@ App.calendar = new Vue({
     <div v-for="item in tomorrow" class="item tomorrow">
       <div class="date tomorrow">
 				<div class="dots tomorrow">
-					<div class="dot" v-for="user in item.users">
-						<div class="dot tomorrow"  :style="{background:user.color}"></div>
-					</div>
+						<div class="dot-cutter tomorrow" v-for="user in item.users">
+							<div class="dot tomorrow"  :style="{background:user.color}"></div>
+						</div>
 				</div>
         <div v-if="!item.allDay">
           {{item.formatted.hours}}:{{item.formatted.minutes}}{{item.formatted.ampm}}
