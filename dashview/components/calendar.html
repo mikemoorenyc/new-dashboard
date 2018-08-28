@@ -124,9 +124,13 @@ App.calendar = new Vue({
     </div>
     <div v-for="item in today" class="item">
       <div class="date">
-        <div class="dot"  :style="{background:item.user.color}">
-          <div  class="initial">{{item.user.firstname[0]}}</div>
-        </div>
+				<div class="dots">
+					<div class="dot-cutter" v-for="user in item.users">
+						<div class="dot" :style="{background-color:user.color">
+							<div class="initial">{{user.firstname[0]}}</div>
+						</div>
+					</div>
+				</div>
         <div v-if="!item.allDay">
           {{item.formatted.hours}}:{{item.formatted.minutes}}{{item.formatted.ampm}}
         </div>
@@ -146,9 +150,11 @@ App.calendar = new Vue({
     <div class="tomorrow-header" v-if="tomorrow.length>0">Tomorrow</div>
     <div v-for="item in tomorrow" class="item tomorrow">
       <div class="date tomorrow">
-        <div class="dot tomorrow"  :style="{background:item.user.color}">
-          <div style="display:none;" class="initial tomorrow">{{item.user.firstname[0]}}</div>
-        </div>
+				<div class="dots">
+					<div class="dot" v-for="user in item.users">
+						<div class="dot tomorrow"  :style="{background:user.color}"></div>
+					</div>
+				</div>
         <div v-if="!item.allDay">
           {{item.formatted.hours}}:{{item.formatted.minutes}}{{item.formatted.ampm}}
         </div>
