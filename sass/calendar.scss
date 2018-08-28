@@ -40,7 +40,8 @@
         padding-left:15rem;
         margin-top:4rem;
       }
-      .dot {
+      
+      .dots {
         width:25rem;
         height:25rem;
         text-align: center;
@@ -49,11 +50,48 @@
         position: absolute;
         left: 0;
         top: 2rem;
+        overflow:hidden;
         font-size: 14rem;
         &.tomorrow {
           width: 10rem;
           height:10rem;
           top: 8rem;
+        }
+        .dot-cutter {
+          position:absolute;
+          left: 0;
+          top: 0;
+          width: 25rem;
+          height: 25rem;
+          overflow: hidden;
+          width: (25rem / 2);
+          &:first-child:last-child {
+            width: 25rem;
+          }
+          &:nth-child(2) {
+            right: 0;
+            left: auto;
+            .dot {
+              position: absolute;
+              top: 0;
+              right: 0;
+            }
+          }
+          &.tomorrow {
+            width: 5rem;
+            height: 10rem;
+            &:first-child:last-child {
+              width: 10rem;
+            }
+          }
+        }
+        .dot {
+          width: 25rem;
+          height: 25rem;
+          line-height: 25rem;
+          position:absolute;
+          left: 0;
+          top: 0;
         }
         .initial {
           position: absolute;
@@ -63,6 +101,7 @@
 
           transform: translate(-50%,-50%);
         }
+        
       }
     }
     .title {
