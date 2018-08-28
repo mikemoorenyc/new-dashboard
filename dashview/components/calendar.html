@@ -1,65 +1,107 @@
 <!--removeIf(script)-->
 <script type="text/javascript">
-App.calendar= new Vue({
+App.calendar = new Vue({
   template: '#template-calendar',
   data: {
-    today:[],
-    tomorrow:[],
+    today: [],
+    tomorrow: [],
     backgroundInterval: null
   },
-  mounted: function() {
+  mounted: function mounted() {
     this.userLoop();
-    this.backgroundInterval = setInterval(function(){
+    this.backgroundInterval = setInterval(function () {
       this.userLoop();
-    }.bind(this),(1000*60)*10)
-
+    }.bind(this), 1000 * 60 * 10);
   },
   methods: {
-    userLoop:function() {
-      App.allUsers.forEach(function(e,i){
-        if(e.calendarReady) {
+    userLoop: function userLoop() {
+      App.allUsers.forEach(function (e, i) {
+        if (e.calendarReady) {
           this.backgroundUpdate(e);
         }
-      }.bind(this))
+      }.bind(this));
     },
-    backgroundUpdate: function(user) {
+    combiner(oldCal,newCal) {
+      var newC = newCal.slice();
+      var oldC = oldCal.slice();
+      newC.forEach(function(e,i){
+        var id =e.id;
+        var user = e.user;
+        //CHECK IF NEW
+        var dupe = false;
+        oldC.forEach(function(e,i){
+          if(id === e.id) {
+            var newItem = this.addUser(e, user);
+            oldC[i] = newItem;
+            var dupe = true;
+            return false;
+          }
+        }.bind(this));
+        if(!dupe) {
+          var item = e;
+          item.users = [item.user];
+          oldC.push(e);
+        }
+      }.bind(this));
+      return oldC;
+    },
+    addUser(item,user) {
+      var users = item.user;
+      var add = false;
+      users.forEach(function(e,i){
+        if(e.id === user.id) {
+          add = true;
+        }
+      });
+      if(add) {
+        return item;
+      }
+      users.push(user);
+      item.users = users;
+      return item;
+    },
+    backgroundUpdate: function backgroundUpdate(user) {
       $.ajax({
         type: 'GET',
 
-        url:App.homeURL+'/google-calendar/?id='+user.id,
-        success: function(data){
+        url: App.homeURL + '/google-calendar/?id=' + user.id,
+        success: function (data) {
 
           var items = data.items;
-    
-          var newToday = this.today.filter(function(e){
-            return e.user.id !== user.id;
-          });
-          var newTomorrow = this.tomorrow.filter(function(e){
-            return e.user.id !== user.id;
-          })
-          var today = new Date().getDate();
-          var tomorrow = new Date().getDate()+1;
-          items.forEach(function(e,i) {
-            var item = {
-             date: new Date(e.date),
-             title: e.title,
-             user: user,
-             formatted: hoursFormatter(new Date(e.date)),
-             allDay: e.allDay
-            }
+		  
 
-            if(item.date.getDate() === today) {
+		  
+          var newToday = [];
+          var newTomorrow = [];
+		  
+		  
+          var today = new Date().getDate();
+          var tomorrow = new Date().getDate() + 1;
+          items.forEach(function (e, i) {
+
+            var item = {
+              date: new Date(e.date),
+              title: e.title,
+              user: user,
+              formatted: hoursFormatter(new Date(e.date)),
+              allDay: e.allDay,
+			        id: e.id
+            };
+
+            if (item.date.getDate() === today) {
               newToday.push(item);
             }
-            if(item.date.getDate() === tomorrow) {
-             newTomorrow.push(item);
+            if (item.date.getDate() === tomorrow) {
+              newTomorrow.push(item);
             }
           }.bind(this));
           function dateSort(a, b) {
-              a =a.date;
-              b = b.date;
-              return a<b ? -1 : a>b ? 1 : 0;
+            a = a.date;
+            b = b.date;
+            return a < b ? -1 : a > b ? 1 : 0;
           };
+          var newToday = this.combiner(this.today, newToday);
+          var newTomorrow = this.combiner(this.tomorrow, newToday)
           newToday.sort(dateSort);
           newTomorrow.sort(dateSort);
           this.today = newToday;
@@ -67,12 +109,9 @@ App.calendar= new Vue({
         }.bind(this)
 
       });
-
     }
   }
 });
-
-
 </script>
 <!--endRemoveIf(script)-->
 <div class="module calendar">
