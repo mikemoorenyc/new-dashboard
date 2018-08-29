@@ -31,6 +31,20 @@ App.calendar = new Vue({
 			var midnight = date.getTime();
 			date.setDate(date.getDate()+1);
 			var tomorrowEnd = date.getTime();
+			switch(date) {
+				case (date < morning):
+					return "old";
+					break;
+				case (date <= midnight):
+					return "today";
+					break;
+				case (date <= tomorrowEnd):
+					return "tomorrow";
+					break;
+				case (date > tomorrowEnd):
+					return "upcoming";
+					break;
+			} 
 		},
     combiner(oldCal,newCal) {
       var newC = newCal.slice();
@@ -72,11 +86,9 @@ App.calendar = new Vue({
       return item;
     },
 		oldRemover(list) {
-			var date = new Date(),
-					morning = date.setHours(0,0,0,0).getTime();
 			return list.filter(function(item) {
-				item.date >= morning;
-			});
+				this.dateEval(item.date) !== "old";
+			}.bind(this));
 		},
 		listCreator(newItem) {
 			var date = new Date();
@@ -86,20 +98,55 @@ App.calendar = new Vue({
 					
 			
 		},
+		sectionMerge(item,list,interval) {
+			//Remove Old Ones and filter to correct interval
+			var newUser = item.users[0];
+			var nList = list.filter(function(e) {
+				return this.dateEval(e.date) === interval;
+			}.bind(this));
+			// new item isn't within interval, return filtered list
+			if(this.dateEval(item.date) !== interval) {
+				return nList;
+			}
+			//ID Match
+			var match = nList.filter(function(e) {
+				return item.id === e.id;
+			})[0];
+			//IF no match, add item and return
+			if(!match) {
+				return nList.push(item);
+			}
+			//Remove newUser and add back in
+			var newUsers = match.users.filter(function(e){
+				return e.id !== newUser.id;
+			}).push(newUser);
+			var newItem = item;
+			newItem.users = newUsers;
+			//Remove match and add back in
+			return nList.filter(function(e) {
+				return e.id !== newItem.id;
+			}).push(newItem);
+			
+		},
     backgroundUpdate: function backgroundUpdate(user) {
 			this.today = this.oldRemover(this.today.slice()),
-					this.tomorrow = this.oldRemover(this.tomorrow.slice()),
-					this.upcoming = this.oldRemover(this.upcoming.slice())
+			this.tomorrow = this.oldRemover(this.tomorrow.slice()),
+			this.upcoming = this.oldRemover(this.upcoming.slice())
       $.ajax({
         type: 'GET',
         url: App.homeURL + '/google-calendar/?id=' + user.id,
         success: function (data) {
 					var items = data.items;
           items.forEach(function (e, i) {
+						var jsDate = new Date(e.date),
+								date = Date.getTime();
+						if(this.dateEval(date) === "old") {
+							return false;
+						}
             var item = {
-              date: new Date(e.date),
+              date: date,
               title: e.title,
-              user: user,
+              users: [user],
               allDay: e.allDay,
 			        id: e.id
             };
@@ -111,6 +158,7 @@ App.calendar = new Vue({
               newTomorrow.push(item);
             }
           }.bind(this));
+					var newToday = this.sectionMerge(item,this.today,"today");
           function dateSort(a, b) {
             a = a.date;
             b = b.date;
