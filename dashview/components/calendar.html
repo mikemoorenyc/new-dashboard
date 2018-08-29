@@ -24,79 +24,30 @@ App.calendar = new Vue({
   },
   methods: {
 		dateEval(date) {
-			var date = new Date();
-			date.setHours(0,0,0,0);
+			var currentdate = new Date();
+			currentdate.setHours(0,0,0,0);
 			var morning = date.getTime();
-			date.setHours(23,59,59,999);
+			currentdate.setHours(23,59,59,999);
 			var midnight = date.getTime();
-			date.setDate(date.getDate()+1);
+			currentdate.setDate(date.getDate()+1);
 			var tomorrowEnd = date.getTime();
-			switch(date) {
-				case (date < morning):
-					return "old";
-					break;
-				case (date <= midnight):
-					return "today";
-					break;
-				case (date <= tomorrowEnd):
-					return "tomorrow";
-					break;
-				case (date > tomorrowEnd):
-					return "upcoming";
-					break;
-			} 
+			if(date < morning) {
+				 return "old";
+			}
+			if(date <= midnight) {
+				return "today";
+			}
+			if(date <= tomorrowEnd) {
+				return "tomorrow";
+			}
+			if(date > tomorrowEnd) {
+				return "upcoming";
+			}
 		},
-    combiner(oldCal,newCal) {
-      var newC = newCal.slice();
-      var oldC = oldCal.slice();
-      newC.forEach(function(e,i){
-        var id =e.id;
-        var user = e.user;
-        //CHECK IF NEW
-        var dupe = false;
-        oldC.forEach(function(e,i){
-          if(id === e.id) {
-            var newItem = this.addUser(e, user);
-            oldC[i] = newItem;
-            var dupe = true;
-            return false;
-          }
-        }.bind(this));
-        if(!dupe) {
-          var item = e;
-          item.users = [item.user];
-          oldC.push(e);
-        }
-      }.bind(this));
-      return oldC;
-    },
-    addUser(item,user) {
-      var users = item.user;
-      var add = false;
-      users.forEach(function(e,i){
-        if(e.id === user.id) {
-          add = true;
-        }
-      });
-      if(add) {
-        return item;
-      }
-      users.push(user);
-      item.users = users;
-      return item;
-    },
 		oldRemover(list) {
 			return list.filter(function(item) {
 				this.dateEval(item.date) !== "old";
 			}.bind(this));
-		},
-		listCreator(newItem) {
-			var date = new Date();
-			var today = this.oldRemover(this.today.slice()),
-					tomorrow = this.oldRemover(this.tomorrow.slice()),
-					upcoming = this.oldRemover(this.upcoming.slice()),
-					
-			
 		},
 		sectionMerge(item,list,interval) {
 			//Remove Old Ones and filter to correct interval
@@ -128,6 +79,11 @@ App.calendar = new Vue({
 			}).push(newItem);
 			
 		},
+		dateSort(a,b) {
+			a = a.date;
+			b = b.date;
+			return a < b ? -1 : a > b ? 1 : 0;
+		},
     backgroundUpdate: function backgroundUpdate(user) {
 			this.today = this.oldRemover(this.today.slice()),
 			this.tomorrow = this.oldRemover(this.tomorrow.slice()),
@@ -141,39 +97,111 @@ App.calendar = new Vue({
 						var jsDate = new Date(e.date),
 								date = Date.getTime();
 						if(this.dateEval(date) === "old") {
-							return false;
+							return ;
 						}
             var item = {
               date: date,
               title: e.title,
               users: [user],
               allDay: e.allDay,
-			        id: e.id
+			        id: e.id,
+							parsedDate: this.dateParser(date)
             };
-
-            if (item.date.getDate() === today) {
-              newToday.push(item);
-            }
-            if (item.date.getDate() === tomorrow) {
-              newTomorrow.push(item);
-            }
-          }.bind(this));
-					var newToday = this.sectionMerge(item,this.today,"today");
-          function dateSort(a, b) {
-            a = a.date;
-            b = b.date;
-            return a < b ? -1 : a > b ? 1 : 0;
-          };
-          var newToday = this.combiner(this.today, newToday);
-          var newTomorrow = this.combiner(this.tomorrow, newToday)
-          newToday.sort(dateSort);
-          newTomorrow.sort(dateSort);
-          this.today = newToday;
-          this.tomorrow = newTomorrow;
+						["today","tomorrow","upcoming"].forEach(function(e) {
+							this[e] = this.sectionMerge(item,this[e],e).sort(this.dateSort)
+						}.bind(this));
+						
+						var ttl = this.today.concat(this.tomorrow).length;
+						this.upcoming = (ttl >= 5) ? [] : this.upcoming.slice(0, (5 - ttl));
+						
+          }.bind(this));	
         }.bind(this)
-
-      });
-    }
+      }.bind(this));
+    },
+		dateParser(date) {
+			var interval = dateEval(date);
+			var computeDate = new Date(date);
+			if(interval == "today" || interval == "tomorrow") {
+				var ampm = (computeDate.getHours() < 12) ? "AM" : "PM";
+				var min = computeDate.getMinutes(),
+						min = (min < 10) ? "0"+min : min;
+				var hour = (computeDate.getHours() > 12) ? computeDate.getHours() - 12 : computeDate.getHours(),
+						hour = (hour == 0)? 12 : hour;
+				return hour+":"+min+ampm;
+			}
+			var today = new Date();
+			var weekDiff = 1000 * 60 * 60 * 24 * 7;
+			if(computeDate.getTime() - today.getTime()  <= weekDiff) {
+				return this.dateName("week",computeDate.getDay());
+			}
+			return this.dateName('month', computeDate.getMonth())+" "+computeDate.getDate();
+		},
+		dateName(type, number) {
+			if(type == "week" ) {
+				switch (number) {
+				case 0:
+					return "Sun";
+					break;
+				case 1:
+					return "Mon";
+					break;
+				case 2:
+					return "Tue";
+					break;
+				case 3:
+					return "Wed";
+					break;
+				case 4:
+					return "Thu";
+					break;
+				case 5:
+					return "Fri";
+					break;
+				case 6:
+					return "Sat";
+				}
+			}
+			
+			if(type == "month" ) {
+				switch (number) {
+				case 0:
+					return "Jan";
+					break;
+				case 1:
+					return "Feb";
+					break;
+				case 2:
+					return "Mar";
+					break;
+				case 3:
+					return "Apr";
+					break;
+				case 4:
+					return "May";
+					break;
+				case 5:
+					return "Jun";
+					break;
+				case 6:
+					return "Jul";
+				case 7:
+					return "Aug";
+					break;
+				case 8:
+					return "Sep";
+					break;
+				case 9:
+					return "Oct";
+					break;
+				case 10:
+					return "Nov";
+					break;
+				case 11:
+					return "Dec";
+				}
+			}
+			
+		}
   }
 });
 </script>
@@ -191,11 +219,11 @@ App.calendar = new Vue({
   </div>
   <div class="tomorrow-container" v-if="tomorrow.length > 0">
 		<h2 class="tomorrow">Tomorrow</h2>
-		<dateitem v-for="item in tomorrow" :item="item" :dateClass="tomorrow"/>
+		<dateitem v-for="item in tomorrow"  :item="item" :date-class="tomorrow"/>
   </div>
 	<div class="upcoming-container" v-if="upcoming.length > 0">
 		<h2 class="tomorrow">Tomorrow</h2>
-		<dateitem v-for="item in upcoming" :item="item" :dateClass="tomorrow"/>
+		<dateitem v-for="item in upcoming" :item="item" :date-class="tomorrow"/>
   </div>
 	
 </div>
