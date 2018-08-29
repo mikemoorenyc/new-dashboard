@@ -15,7 +15,7 @@ Vue.component('dateitem',{
         </div> 
       </div>
     </div>
-    <div class="time" :class="this.dateClass">{{this.item.date}}</div> 
+    <div class="time" :class="this.dateClass">{{this.item.parsedDate}}</div> 
   </div>
   <div class="title" :class="this.dateClass">{{this.item.title}}</div>
 </div>
