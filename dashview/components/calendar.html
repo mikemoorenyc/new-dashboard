@@ -23,6 +23,15 @@ App.calendar = new Vue({
     }.bind(this), 1000 * 60 * 10);
   },
   methods: {
+		dateEval(date) {
+			var date = new Date();
+			date.setHours(0,0,0,0);
+			var morning = date.getTime();
+			date.setHours(23,59,59,999);
+			var midnight = date.getTime();
+			date.setDate(date.getDate()+1);
+			var tomorrowEnd = date.getTime();
+		},
     combiner(oldCal,newCal) {
       var newC = newCal.slice();
       var oldC = oldCal.slice();
