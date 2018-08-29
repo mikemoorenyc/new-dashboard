@@ -5,23 +5,25 @@ App.calendar = new Vue({
   data: {
     today: [],
     tomorrow: [],
-		upcoming: [].
+		upcoming: [],
+		users: [],
     backgroundInterval: null
   },
   mounted: function mounted() {
+		App.allUsers.forEach(function(e) {
+			if(e.calendarReady) {
+				this.users.push(e);
+				this.backgroundUpdate(e);
+			}
+		});
     this.userLoop();
     this.backgroundInterval = setInterval(function () {
-      this.userLoop();
+      this.users.forEach(function(e) {
+				this.backgroundUpdate(e);
+			});
     }.bind(this), 1000 * 60 * 10);
   },
   methods: {
-    userLoop: function userLoop() {
-      App.allUsers.forEach(function (e, i) {
-        if (e.calendarReady) {
-          this.backgroundUpdate(e);
-        }
-      }.bind(this));
-    },
     combiner(oldCal,newCal) {
       var newC = newCal.slice();
       var oldC = oldCal.slice();
