@@ -1,1 +1,110 @@
+<!--removeIf(script)-->
+<script type="text/javascript">
+App.news = new Vue({
+  template: '#template-news',
+  data: {
+    newsItems: [],
+    failed: false,
+    backgroundInterval: null,
+    relativeInterval: null,
+    ih: 0,
+    scrollPos: 0,
+    mover: null,
+    perSec: 0
+  },
+  updated: function() {
+    this.ih = $(App.news.$el).find('.container .scroller').height() / 2
+    this.setSpeed();
+  },
+  mounted: function() {
+
+  //  this.mover= requestAnimationFrame(this.move);
+    $(window).resize(function(){
+      this.ih = $(App.news.$el).find('.container .scroller').height() / 2;
+      this.setSpeed();
+    }.bind(this))
+    this.backgroundUpdate();
+    this.backgroundInterval = setInterval(function(){
+      this.backgroundUpdate();
+    }.bind(this),(1000*60)*20)
+    this.relativeInterval = setInterval(function(){
+      this.updateRelative();
+    }.bind(this), (1000*30))
+
+  },
+  methods: {
+    setSpeed: function(){
+       this.perSec = (this.ih * 2)/ 30;
+    },
+    move: function() {
+      this.scrollPos += .25;
+
+      if(this.scrollPos >= this.ih) {
+        this.scrollPos = 0;
+      }
+      this.mover= requestAnimationFrame(this.move);
+    },
+    backgroundUpdate: function() {
+      $.ajax({
+        type: 'GET',
+
+        url:App.templateURL+'/webproxy.php?id=news',
+        success: function(data){
+          this.failed = false;
+          var newNews = [];
+          $(data).find('item').each(function(i,e){
+
+              var date = new Date($(e).find('pubDate').text())
+              newNews.push({
+                title: $(e).find('title').text(),
+                date: date,
+                relative: hoursAgo(date)
+              })
+          }.bind(this));
+          newNews.sort(function(a, b) {
+              a =a.date;
+              b = b.date;
+              return a>b ? -1 : a<b ? 1 : 0;
+          });
+          this.newsItems = newNews;
+        }.bind(this),
+        error: function(data) {
+          if(!this.failed) {
+            this.failed = new Date();
+          }
+        }.bind(this)
+
+      });
+
+    },
+    updateRelative: function(){
+      this.newsItems.forEach(function(e,i){
+        this.newsItems[i].relative = hoursAgo(e.date)
+      }.bind(this));
+    }
+  }
+});
+</script>
+<!--endRemoveIf(script)-->
+<div class="news module shrink">
+  <div class="container">
+    <div class="scroller" :style="{animationDuration: this.perSec+'s'}">
+      <div class="itemBlock">
+        <div v-for="(item,key) in newsItems" class="item" >
+          <div class="title">{{item.title}}</div>
+          <div class="date">{{item.relative}}</div>
+        </div>
+      </div>
+      <div class="itemBlock">
+        <div v-for="(item,key) in newsItems" class="item" >
+
+          <div class="title">{{item.title}}</div>
+          <div class="date">{{item.relative}}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <fail-pill :failed="this.failed"/>
+</div>
 
