@@ -76,24 +76,14 @@ if($client->isAccessTokenExpired() ) {
 }
 */
 date_default_timezone_set('America/New_York');
-$year = date('Y');
-$month = date('m');
-$today = date('d');
-$ystring = $year.'-'.$month.'-'.$today;
-
-$datetime = new DateTime($ystring);
-$datetime->modify('+1 day');
-$tomorrowFull = $datetime->format('Y-m-d');
-$timeMin = $year.'-'.$month.'-'.$today.'T00:00:00-05:00';
-$timeMax = $tomorrowFull.'T23:59:00-05:00';
 
 $calendar_service = new Google_Service_Calendar($client);
 
 $list = $calendar_service->events->listEvents('primary',
 array(
 	'singleEvents' => true,
-	'timeMin' => $timeMin,
-	'timeMax' => $timeMax
+	'timeMin' => date("Y-m-d\\T00:00:00P"),
+	"maxResults" => 20
 ));
 
 $items= $list->items;
@@ -104,7 +94,7 @@ foreach($items as $item) {
 	//var_dump($item);
 	$allDay = false;
 	if($item->start->dateTime == NULL) {
-		$date = $item->start->date.'T00:01:00-05:00';
+		$date = $item->start->date.'T00:00:00'.date("P");
 		$allDay = true;
 	} else {
 		$date = $item->start->dateTime;
