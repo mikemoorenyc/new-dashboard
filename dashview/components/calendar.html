@@ -61,30 +61,33 @@ App.calendar = new Vue({
       item.users = users;
       return item;
     },
+		oldRemover(list) {
+			var date = new Date(),
+					morning = date.setHours(0,0,0,0).getTime();
+			return list.filter(function(item) {
+				item.date >= morning;
+			});
+		},
+		listCreator(newItem) {
+			var today = this.oldRemover(this.today.slice()),
+					tomorrow = this.oldRemover(this.tomorrow.slice()),
+					upcoming = this.oldRemover(this.upcoming.slice())
+			
+		},
     backgroundUpdate: function backgroundUpdate(user) {
+			this.today = this.oldRemover(this.today.slice()),
+					this.tomorrow = this.oldRemover(this.tomorrow.slice()),
+					this.upcoming = this.oldRemover(this.upcoming.slice())
       $.ajax({
         type: 'GET',
-
         url: App.homeURL + '/google-calendar/?id=' + user.id,
         success: function (data) {
-
-          var items = data.items;
-		  
-
-		  
-          var newToday = [];
-          var newTomorrow = [];
-		  
-		  
-          var today = new Date().getDate();
-          var tomorrow = new Date().getDate() + 1;
+					var items = data.items;
           items.forEach(function (e, i) {
-
             var item = {
               date: new Date(e.date),
               title: e.title,
               user: user,
-              formatted: hoursFormatter(new Date(e.date)),
               allDay: e.allDay,
 			        id: e.id
             };
