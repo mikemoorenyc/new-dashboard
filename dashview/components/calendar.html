@@ -16,7 +16,6 @@ App.calendar = new Vue({
 				this.backgroundUpdate(e);
 			}
 		});
-    this.userLoop();
     this.backgroundInterval = setInterval(function () {
       this.users.forEach(function(e) {
 				this.backgroundUpdate(e);
@@ -71,9 +70,11 @@ App.calendar = new Vue({
 			});
 		},
 		listCreator(newItem) {
+			var date = new Date();
 			var today = this.oldRemover(this.today.slice()),
 					tomorrow = this.oldRemover(this.tomorrow.slice()),
-					upcoming = this.oldRemover(this.upcoming.slice())
+					upcoming = this.oldRemover(this.upcoming.slice()),
+					
 			
 		},
     backgroundUpdate: function backgroundUpdate(user) {
