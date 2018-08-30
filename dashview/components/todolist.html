@@ -44,10 +44,8 @@ App.todolist = new Vue({
 <div class="todolist module">
   <div class="item" v-for="item in listItems" :class="{unchecked:item.checkedBy === false}">
     <div class="box"
-	 :style="{
-		 backgroundColor:(item.checkedBy) ? item.checkedBy.color : null,
-		 borderColor: (item.checkedBy) ? null : item.checkedBy.color
-		 }" ></div>
+	 :style="{backgroundColor:(item.checkedBy) ? item.checkedBy.color : null,
+			 borderColor: (item.checkedBy)?  item.checkedBy.color : item.addedBy.color}" ></div>
     
     <div class="title">{{item.title}}</div>
   </div>
