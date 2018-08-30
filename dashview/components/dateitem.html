@@ -10,7 +10,7 @@ Vue.component('dateitem',{
   <div class="date">
     <div class="dots" :class="this.dateClass">
       <div v-for="user in this.item.users" class="dot-cutter" :class="this.dateClass">
-        <div class="dot" :class="this.dateClass" :style="{background-color:user.color">
+        <div class="dot" :class="this.dateClass" :style="{backgroundColor:user.color">
           <div class="initial" :class="this.dateClass">{{user.firstname[0]}}</div>
         </div> 
       </div>
