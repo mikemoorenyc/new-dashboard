@@ -83,7 +83,8 @@ $list = $calendar_service->events->listEvents('primary',
 array(
 	'singleEvents' => true,
 	'timeMin' => date("Y-m-d\\T00:00:00P"),
-	"maxResults" => 20
+	"maxResults" => 20,
+	"orderBy"=>"startTime"
 ));
 
 $items= $list->items;
