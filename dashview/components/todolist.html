@@ -42,11 +42,14 @@ App.todolist = new Vue({
 </script>
 <!--endRemoveIf(script)-->
 <div class="todolist module">
-  <div class="item" v-for="item in listItems" :class="{checked:item.checkedBy}" :class="{unchecked:!item.checkedBy}">
-    <div class="box":class="{checked:item.checkedBy}" :style="{background:item.checkedBy.color}"></div>
+  <div class="item" v-for="item in listItems" :class="{unchecked:item.checkedBy === false}">
+    <div class="box"
+	 :style="{
+		 backgroundColor:(item.checkedBy) ? item.checkedBy.color : null,
+		 borderColor: (item.checkedBy) ? null : item.checkedBy.color
+		 }" ></div>
     
     <div class="title">{{item.title}}</div>
   </div>
   <fail-pill :failed="this.failed"/>
 </div>
-
