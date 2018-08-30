@@ -4,30 +4,35 @@ App.todolist = new Vue({
   template: '#template-todolist',
   data: {
     listItems: App.initialTodos,
-    failed: false
+    failed: false,
+	lastCheck: Math.floor(Date.now() / 1000)
   },
-  mounted: function() {
+  mounted: function mounted() {
     this.backgroundUpdate();
-    setInterval(function(){
+    setInterval(function () {
       this.backgroundUpdate();
-    }.bind(this),(1000*60)*2)
+    }.bind(this), 1000 * 60 * 2);
   },
   methods: {
-    backgroundUpdate: function() {
+    backgroundUpdate: function backgroundUpdate() {
       $.ajax({
         type: 'GET',
         dataType: 'json',
-        url:App.templateURL+'/listretriever.php',
+        url: App.templateURL + '/listretriever.php?ts='+this.lastCheck,
 
-        success: function(data){
-          this.failed = false;
-          this.listItems = data.listItems;
-
+        success: function (data,status,xhr) {
+			this.failed = false;
+			this.lastCheck = Math.floor(Date.now() / 1000);
+			if(xhr.status === 304) {
+				
+				return false;
+			}
+			this.listItems = data.listItems;
         }.bind(this),
-        error: function(data) {
-            if(!this.failed) {
-              this.failed = new Date();
-            }
+        error: function (data) {
+          if (!this.failed) {
+            this.failed = new Date();
+          }
         }.bind(this)
 
       });
@@ -39,7 +44,10 @@ App.todolist = new Vue({
 <div class="todolist module">
   <div class="item" v-for="item in listItems" :class="{checked:item.checkedBy}">
     <div class="box":class="{checked:item.checkedBy}" :style="{background:item.checkedBy.color}"></div>
+    <div v-if="{!item.checkedBy}" class="box":class="{checked:item.checkedBy}" :style="{border-color:item.addedBy.color}"></div>
+    <div v-if="{item.checkedBy}" class="box":class="{checked:item.checkedBy}" :style="{background:item.checkedBy.color}"></div>
     <div class="title">{{item.title}}</div>
   </div>
   <fail-pill :failed="this.failed"/>
 </div>
+
